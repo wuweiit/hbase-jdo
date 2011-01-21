@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+
+<!--
+    file://  : standalone
+    hdfs://  : pseudo-distributed
+    hdfs://name  : fully distributed.
+-->
+<configuration>
+  <property>
+    <name>fs.default.name</name>
+    <value>hdfs://192.168.0.203:9100</value>
+  </property>
+<!-- hadoop fs -rmr 으로 삭제했을경우 일정기간동안 휴지통에 보관-->
+<property>
+  <name>fs.trash.interval</name>
+  <value>60</value>
+  <description>Number of minutes between trash checkpoints.
+  If zero, the trash feature is disabled.
+  </description>
+</property>
+
+<!-- 두번째 namenode 지정-->
+<property>
+  <name>fs.checkpoint.dir</name>
+  <value>/home/app/hadoop-0.20.2/data/dfs/namesecondary</value>
+  <description>Determines where on the local filesystem the DFS secondary
+      name node should store the temporary images to merge.
+      If this is a comma-delimited list of directories then the image is
+      replicated in all of the directories for redundancy.
+  </description>
+</property>
+
+<property>
+  <name>hadoop.tmp.dir</name>
+  <value>/home/app/hadoop-0.20.2/data/tmp</value>
+  <description>A base for other temporary directories.</description>
+</property>
+</configuration>
