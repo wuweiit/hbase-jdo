@@ -1,0 +1,19 @@
+glob:.svn/
+glob:.snprj/
+glob:bake*.log
+glob:bake*.log.lck
+glob:*.class
+regexp:^release/.*\.ro$
+
+syntax: regexp
+^bin/
+syntax: regexp
+^release/output$
+syntax: regexp
+^release/log\.txt$
+syntax: regexp
+^properties\.cfg$
+syntax: regexp
+^conf/conf/romi_config\.xml$
+syntax: regexp
+^\.install2$
