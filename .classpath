@@ -62,6 +62,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib_ext/0.20.6/hadoop-0.20.2-core.jar"/>
 	<classpathentry kind="lib" path="lib_ext/0.20.6/hbase-0.20.6-transactional.jar"/>
-	<classpathentry kind="lib" path="lib_ext/0.20.6/hbase-0.20.6.jar"/>
+	<classpathentry kind="lib" path="lib_ext/0.20.6/hbase-0.20.6.jar" sourcepath="doc/hbase_0.20.6_src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
