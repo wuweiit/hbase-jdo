@@ -249,9 +249,10 @@ public class SelectQuery extends HBQuery{
 	 * this is extremely slow. I don't recommend to use this.
 	 * 
 	 * @deprecated
+	 * @param receiver will be called when the rows receive {countPerCall) count.
 	 * @return total row count.
 	 */
-	public int getTotalRowCount(){
+	public int getTotalRowCount(RowCountReceiver receiver, int countPerCall){
 		
 		int count = 0;
 		ResultScanner rs=null;
@@ -271,7 +272,9 @@ public class SelectQuery extends HBQuery{
 			while(it.hasNext()){
 				it.next();
 				count++;
+				if(receiver!=null && count%countPerCall==0) receiver.receive(count);
 			}
+			if(receiver!=null) receiver.receive(count);
 			rs.close();
 		} catch (Exception e) {
 			log.error("total row count",e);

@@ -42,13 +42,19 @@ public class SelectQueryTest extends JDOTest{
 		end("select row");
 		
 		start();
-		int count = sQuery.getTotalRowCount();
+		RowCountReceiver receiver = new RowCountReceiver() {
+			@Override
+			public void receive(int totalCount) {
+				log.debug("received count. total={} received.",totalCount);
+			}
+		};
+		int count = sQuery.getTotalRowCount(receiver,100);
 		log.debug("got total row count={}",count);
 		end("total row count");
 		
 		// confirm column value existing.
 		start();
-		assertTrue(sQuery.existColumnValue(bean.getFamily(),COL_ID,"updated".getBytes()));
+		assertTrue(sQuery.existColumnValue(bean.getFamily(),COL_ID,"testid-0".getBytes()));
 		end("existColumnValue");
 		
 		// search with start row.

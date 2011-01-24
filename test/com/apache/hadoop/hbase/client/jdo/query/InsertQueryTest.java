@@ -65,7 +65,14 @@ public class InsertQueryTest extends JDOTest{
 		long start = System.currentTimeMillis();
 		SelectQuery query = dbo.createSelectQuery(TABLE);
 		long period = System.currentTimeMillis()-start;
-		log.debug("total row count={}, period={}ms",query.getTotalRowCount(),period);
+		
+		RowCountReceiver receiver = new RowCountReceiver() {
+			@Override
+			public void receive(int totalCount) {
+				log.debug("received count. total={} received.",totalCount);
+			}
+		};
+		log.debug("total row count={}, period={}ms",query.getTotalRowCount(receiver,100),period);
 	}
 	
 
