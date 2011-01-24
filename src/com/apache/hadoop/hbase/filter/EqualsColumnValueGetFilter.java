@@ -24,7 +24,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import org.apache.hadoop.hbase.KeyValue;
-import org.apache.hadoop.hbase.filter.FilterBase;
+import org.apache.hadoop.hbase.filter.Filter;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 
@@ -34,7 +34,7 @@ import edu.emory.mathcs.backport.java.util.Arrays;
  * 
  */
 @Deprecated
-public class EqualsColumnValueGetFilter extends FilterBase {
+public class EqualsColumnValueGetFilter implements Filter{
 	private byte[] value;
 	private byte[] colName;
 	private int limit;
@@ -101,12 +101,12 @@ public class EqualsColumnValueGetFilter extends FilterBase {
 	@Override
 	public ReturnCode filterKeyValue(KeyValue v) {
 		if(v.getValue().length!=value.length) { // for performace.
-			return ReturnCode.NEXT_COL;
+			return ReturnCode.SKIP;
 		}else if(Arrays.equals(value,v.getValue())){
 			count++;
 			return ReturnCode.INCLUDE;
 		}else{
-			return ReturnCode.NEXT_COL;
+			return ReturnCode.NEXT_ROW;
 		}
 	}
 	

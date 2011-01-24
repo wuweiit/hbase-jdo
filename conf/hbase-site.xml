@@ -5,16 +5,30 @@
 		<name>hbase.rootdir</name>
 		<value>hdfs://192.168.0.203:9102/hbase</value>
 		<description>The directory shared by regon servers.
-			Should be fully-qualified to include the filesystem to use.
-			E.g: hdfs://NAMENODE_SERVER:PORT/HBASE_ROOTDIR
-  </description>
+			Should be
+			fully-qualified to include the filesystem to use.
+			E.g:
+			hdfs://NAMENODE_SERVER:PORT/HBASE_ROOTDIR
+  		</description>
 	</property>
 
-	<!-- Hbase Master Port -->
+	<!-- Hbase Master Info -->
+	<property>
+		<name>hbase.master</name>
+		<value>192.168.0.203:9102</value>
+		<description>By default ZK is configured with localhost which means
+			the client
+			should run on the same physical machine. Configure this if client runs on a
+			different
+			machine.
+	</description>
+	</property>
+	<!-- 
 	<property>
 		<name>hbase.master.port</name>
 		<value>9102</value>
 	</property>
+	 -->
 
 	<!-- 분산 클러스터 인경우 =true -->
 	<property>
@@ -23,7 +37,8 @@
 		<description>The mode the cluster will be in. Possible values are
 			false: standalone and pseudo-distributed setups with managed
 			Zookeeper
-			true: fully-distributed with unmanaged Zookeeper Quorum (see hbase-env.sh)
+			true: fully-distributed with unmanaged Zookeeper Quorum (see
+			hbase-env.sh)
 		</description>
 	</property>
 
@@ -39,15 +54,15 @@
 		hbase-env.sh this is the list of servers which we will start/stop
 		ZooKeeper on. </description> </property>
 	-->
-	 <property>
-	 	<name>hbase.zookeeper.quorum</name>
-	 	<value>192.168.0.203</value>
-	 </property>
-	 <property>
-	 	<name>hbase.zookeeper.property.clientPort</name>
-	 	<value>2181</value>
-	 </property>
-	 
+	<property>
+		<name>hbase.zookeeper.quorum</name>
+		<value>192.168.0.203</value>
+	</property>
+	<property>
+		<name>hbase.zookeeper.property.clientPort</name>
+		<value>2181</value>
+	</property>
+
 	<property>
 		<name>hbase.tmp.dir</name>
 		<value>/home/app/hbase-0.20.6/data/tmp</value>
@@ -63,7 +78,8 @@
 
 	<property>
 		<name>hbase.regionserver.impl</name>
-		<value>org.apache.hadoop.hbase.regionserver.tableindexed.IndexedRegionServer</value>
+		<value>org.apache.hadoop.hbase.regionserver.tableindexed.IndexedRegionServer
+		</value>
 	</property>
 
 </configuration>

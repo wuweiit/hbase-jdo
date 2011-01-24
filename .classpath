@@ -58,11 +58,10 @@
 	<classpathentry kind="lib" path="lib/zookeeper-3.3.2.jar"/>
 	<classpathentry kind="lib" path="lib_ext/commons-beanutils.jar"/>
 	<classpathentry kind="lib" path="lib_ext/commons-pool-1.5.5.jar"/>
-	<classpathentry kind="lib" path="lib_ext/hbase-0.90.0.jar" sourcepath="doc/hbase-0.90.0src.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="lib_ext/old/hadoop-0.20.2-core.jar"/>
-	<classpathentry kind="lib" path="lib_ext/hbase-0.90.0-tests.jar" sourcepath="doc/hbase-0.90.0test-src.zip"/>
-	<classpathentry kind="lib" path="lib_ext/hbase-0.90.0-transactional-20100120.jar" sourcepath="doc/transactional_0.90.0src.zip"/>
+	<classpathentry kind="lib" path="lib_ext/0.20.6/hadoop-0.20.2-core.jar"/>
+	<classpathentry kind="lib" path="lib_ext/0.20.6/hbase-0.20.6-transactional.jar"/>
+	<classpathentry kind="lib" path="lib_ext/0.20.6/hbase-0.20.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

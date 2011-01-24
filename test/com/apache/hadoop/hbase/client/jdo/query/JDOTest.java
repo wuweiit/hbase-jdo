@@ -24,7 +24,7 @@ public class JDOTest extends TestCase implements IHBaseLog{
 	private long start;
 	@Override
 	protected void setUp() throws Exception {
-//		initTable();
+//		initTable(HBaseOrder.ASC);
 	}
 
 	protected final void initTable(HBaseOrder order) throws Exception {
@@ -44,6 +44,10 @@ public class JDOTest extends TestCase implements IHBaseLog{
 			assertTrue(dbo.addIndexExistingTable(TABLE, FAMILY,COL_NAME));
 		}
 	}
+	
+	public void test(){
+		// do nothing
+	};
 	
 	public final void start(){
 		this.start = System.currentTimeMillis();

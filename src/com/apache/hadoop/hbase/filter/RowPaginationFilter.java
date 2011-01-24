@@ -24,7 +24,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import org.apache.hadoop.hbase.KeyValue;
-import org.apache.hadoop.hbase.filter.FilterBase;
+import org.apache.hadoop.hbase.filter.Filter;
 
 /**
  * A filter, based on the PageFilter, takes two arguments: limit and offset.
@@ -34,7 +34,7 @@ import org.apache.hadoop.hbase.filter.FilterBase;
  * This filter can be used when regions are only one.
  */
 @Deprecated
-public class RowPaginationFilter extends FilterBase {
+public class RowPaginationFilter implements Filter {
 	private int rowsAccepted = 0;
 	private int limit = 0;
 	private int offset = 0;

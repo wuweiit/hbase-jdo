@@ -24,7 +24,6 @@ import org.apache.hadoop.hbase.client.transactional.TransactionState;
 import org.apache.hadoop.hbase.client.transactional.TransactionalTable;
 import org.apache.hadoop.hbase.filter.BinaryComparator;
 import org.apache.hadoop.hbase.filter.ColumnCountGetFilter;
-import org.apache.hadoop.hbase.filter.ColumnPaginationFilter;
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.FilterList;
@@ -313,11 +312,11 @@ public class HBaseClient extends AbstractHBase{
 		doFilter("RowPaginationFilter", filter);
 	}
 
-	public void pageColumnFilter() throws IOException {
-		log.debug("ColumnPaginationFilter");
-		ColumnPaginationFilter filter = new ColumnPaginationFilter(1,0);
-		doFilter("ColumnPaginationFilter", filter);
-	}
+//	public void pageColumnFilter() throws IOException {
+//		log.debug("ColumnPaginationFilter");
+//		ColumnPaginationFilter filter = new ColumnPaginationFilter(1,0);
+//		doFilter("ColumnPaginationFilter", filter);
+//	}
 	
 	/**
 	 * @throws IOException
