@@ -92,6 +92,7 @@ public class SelectQuery extends HBQuery{
 			log.error("Search",e);
 		} finally{
 			if(scanner!=null) scanner.close();
+			releaseTable(table);
 		}
 		
 		return isExist;
