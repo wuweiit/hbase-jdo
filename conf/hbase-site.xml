@@ -1,6 +1,6 @@
 <configuration>
 
-	<!-- Hadoop 의 HDFC 경로 -->
+	<!-- Hadoop's hdfs location-->
 	<property>
 		<name>hbase.rootdir</name>
 		<value>hdfs://192.168.0.203:9102/hbase</value>

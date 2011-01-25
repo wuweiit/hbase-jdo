@@ -48,7 +48,7 @@ public class SelectQueryTest extends JDOTest{
 				log.debug("received count. total={} received.",totalCount);
 			}
 		};
-		int count = sQuery.getTotalRowCount(receiver,100);
+		int count = sQuery.getTotalRowCount(receiver,10000);
 		log.debug("got total row count={}",count);
 		end("total row count");
 		

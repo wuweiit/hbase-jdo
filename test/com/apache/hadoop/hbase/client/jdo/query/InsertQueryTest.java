@@ -29,7 +29,7 @@ public class InsertQueryTest extends JDOTest{
 	}
 	
 	public void testInsertStress() {
-		insertBox(100000);
+		insertBox(1000000);
 	}
 	
 	public TestUserBean insert(){
@@ -62,9 +62,9 @@ public class InsertQueryTest extends JDOTest{
 			log.debug("inserted data. period={} ms, total={}",
 					new Object[]{period,runCount});
 		}
-		long start = System.currentTimeMillis();
+		start();
 		SelectQuery query = dbo.createSelectQuery(TABLE);
-		long period = System.currentTimeMillis()-start;
+		
 		
 		RowCountReceiver receiver = new RowCountReceiver() {
 			@Override
@@ -72,7 +72,8 @@ public class InsertQueryTest extends JDOTest{
 				log.debug("received count. total={} received.",totalCount);
 			}
 		};
-		log.debug("total row count={}, period={}ms",query.getTotalRowCount(receiver,100),period);
+		log.debug("total row count={} ",query.getTotalRowCount(receiver,100));
+		end("get total count");
 	}
 	
 
