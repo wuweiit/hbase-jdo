@@ -2,7 +2,6 @@ package com.apache.hadoop.hbase.tool.view;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.apache.hadoop.hbase.tool.core.IRootPanel;
-import com.apache.hadoop.hbase.tool.core.AbstractUIManager;
+import com.apache.hadoop.hbase.tool.core.UIResult;
 
 /**
  * @author ncanis
@@ -24,7 +23,7 @@ import com.apache.hadoop.hbase.tool.core.AbstractUIManager;
 public abstract class AbstractHPanel extends JPanel implements IRootPanel{
 	
 	public static final Logger UI_LOG = LoggerFactory.getLogger("hbase.jdo.tool"); 
-	protected final JFrame frame = AbstractUIManager.get().getRootPanel(); 
+	protected final JFrame frame = UIManagerImpl.get().getFrame(); 
 	public final void showSimpleDialog(String message){		
 		JOptionPane.showMessageDialog(getParent(),message);
 	}
@@ -64,5 +63,16 @@ public abstract class AbstractHPanel extends JPanel implements IRootPanel{
 	
 	public final String showInputDialog(String message, String title, String value){
 		return (String) JOptionPane.showInputDialog(getParent(), message, title, JOptionPane.QUESTION_MESSAGE,null,null,value);
+	}
+	
+
+	@Override
+	public UIResult checkAvailable() {
+		return UIResult.SUCCESS;
+	}
+
+	@Override
+	public boolean doConfirm() {
+		return true;
 	}
 }

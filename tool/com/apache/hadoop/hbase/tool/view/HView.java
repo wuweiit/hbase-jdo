@@ -2,8 +2,10 @@ package com.apache.hadoop.hbase.tool.view;
 
 import com.apache.hadoop.hbase.tool.core.IRootPanel;
 import com.apache.hadoop.hbase.tool.core.IView;
+import com.apache.hadoop.hbase.tool.view.hadoop.HHadoopView;
 import com.apache.hadoop.hbase.tool.view.search.HSearchView;
-import com.apache.hadoop.hbase.tool.view.table.HTableView;
+import com.apache.hadoop.hbase.tool.view.setting.HSettingView;
+import com.apache.hadoop.hbase.tool.view.table.TableMainView;
 
 
 /**
@@ -11,9 +13,10 @@ import com.apache.hadoop.hbase.tool.view.table.HTableView;
  *
  */
 public enum HView implements IView{
-	TABLE(1,"Table",HTableView.class),
-	SEARCH(2,"Search",HSearchView.class),
-	HADOOP(3,"Hadoop",null),
+	TABLE(0,"Table",TableMainView.class),
+	SEARCH(1,"Search",HSearchView.class),
+	HADOOP(2,"Hadoop",HHadoopView.class),
+	SETTING(3,"Setting",HSettingView.class),
 	;
 	
 	private final int index;	 

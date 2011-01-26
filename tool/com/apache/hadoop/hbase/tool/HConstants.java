@@ -9,6 +9,7 @@ import javax.swing.UIManager;
 public class HConstants {
 	
 	public static final int STATUS_INIT = 0;
+	public static final String TITLE = "HBase Tool ver0.1(http://code.google.com/p/hbase-jdo/)";
 
 	public static void LAF() {
 		try {

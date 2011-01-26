@@ -1,21 +1,15 @@
-package com.apache.hadoop.hbase.tool.view.table;
+package com.apache.hadoop.hbase.tool.view.setting;
 
 import java.awt.BorderLayout;
-
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
 import com.apache.hadoop.hbase.tool.core.UIResult;
 import com.apache.hadoop.hbase.tool.view.AbstractHPanel;
 
-public class HTableView extends AbstractHPanel{
+public class HSettingView extends AbstractHPanel{
 
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel pane_guild_rank = null;
-	private JTabbedPane tpane_stat = null;
-	
-	public HTableView(){
+	public HSettingView(){
 		initialize();
 	}
 	/**

@@ -3,6 +3,7 @@ package com.apache.hadoop.hbase.tool;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.PrintStream;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -26,7 +27,7 @@ public class HBaseTool {
 	
 	private void startUI() {
 		final JFrame frame = new JFrame();		
-		frame.setTitle("HBase Tool");
+		frame.setTitle(HConstants.TITLE);
 
 		int width = 1200;
 		int height = 900;
@@ -42,7 +43,7 @@ public class HBaseTool {
 
 		// init panel.
 		HMainPanel mPanel = new HMainPanel();
-		UIManagerImpl.get().setRootPanel(mPanel);
+		UIManagerImpl.get().setInfo(mPanel,mPanel);
 		UIManagerImpl.get().setFrame(frame);
 		
 		HMenuBar bar = new HMenuBar();
@@ -63,7 +64,7 @@ public class HBaseTool {
 		});
 		
 		// start Table view.
-		UIManagerImpl.get().changeUI(HView.TABLE);
+		UIManagerImpl.get().changeUI(HView.TABLE,true);
 	}
 
 	

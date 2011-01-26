@@ -18,6 +18,11 @@ public abstract class AbstractUIManager {
 	public IChanger getChanger() {
 		return changer;
 	}
+	
+	public void setInfo(IRootPanel root, IChanger changer){
+		this.rootPanel = root;
+		this.changer = changer;
+	}
 
 	public IView getCurView() {
 		return curView;
@@ -29,10 +34,6 @@ public abstract class AbstractUIManager {
 
 	public IRootPanel getRootPanel() {
 		return rootPanel;
-	}
-
-	public void setRootPanel(IRootPanel rootPanel) {
-		this.rootPanel = rootPanel;
 	}
 
 	public void update(){
@@ -54,7 +55,7 @@ public abstract class AbstractUIManager {
 
 	public void changeBackUI() {
 		if(this.befView==null) return;
-		changeUI(befView);
+		changeUI(befView,true);
 	}
 	
 	public IRootPanel getPanel(IView view){
@@ -69,15 +70,23 @@ public abstract class AbstractUIManager {
 		}
 	}
 	
-	public void changeUI(IView menu) {
+	public void changeUI(IView menu,boolean isCallUI) {
 		if(this.rootPanel==null) {
+			return;
+		}else if(menu==befView || isCallUI==false){
 			return;
 		}
 		
-		IRootPanel nextPanel = getPanel(menu);
-
+		if(befView!=null) {
+			IRootPanel curPanel = getPanel(befView);
+			curPanel.clearPanel();
+			curPanel.closePanel();
+		}
+		
+		IRootPanel nextPanel = getPanel(menu);				
 		boolean isMoved = changer.changeUI(nextPanel,menu);
 		if(isMoved){
+			nextPanel.startPanel();
 			this.befView = menu;
 		}		
 	}

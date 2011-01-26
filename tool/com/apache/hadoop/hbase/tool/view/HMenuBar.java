@@ -8,6 +8,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import com.apache.hadoop.hbase.tool.core.UIResult;
+
 /**
  * @author ncanis
  *
@@ -114,8 +116,27 @@ public class HMenuBar extends AbstractHPanel{
 	}
 
 	@Override
-	public void initStatus(int status) {
+	public void update() {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void startPanel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clearPanel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void closePanel() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

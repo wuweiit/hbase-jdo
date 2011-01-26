@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+
+import org.hsqldb.lib.Collection;
 
 public class HUtil {
 	private static final SimpleDateFormat df2 = new SimpleDateFormat("yyyyMM");
@@ -63,5 +66,9 @@ public class HUtil {
 		int second = c.get(Calendar.SECOND);
 
 		return year + "- " + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+	}
+	
+	public static boolean isEmpty(Collection col){
+		return col==null || col.size()==0;
 	}
 }
