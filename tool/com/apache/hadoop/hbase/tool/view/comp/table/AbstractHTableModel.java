@@ -17,6 +17,11 @@ public abstract class AbstractHTableModel<T> extends AbstractTableModel{
 			}
 		}
 	}
+	
+	public T getLastRow(){
+		if(values.size()==0) return null;
+		return values.get(values.size()-1);
+	}
 
 	public void addColumn(HTableColumn col){
 		this.columns.add(col);
@@ -42,9 +47,9 @@ public abstract class AbstractHTableModel<T> extends AbstractTableModel{
 		clear();
 		if(values==null) return;
 		
+		this.values.addAll(values);
 		resetColumns(values);
 		
-		this.values.addAll(values);
 	}
 	
 	protected void resetColumns(List<T> values2) {

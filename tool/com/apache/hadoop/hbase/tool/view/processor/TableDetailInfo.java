@@ -6,6 +6,7 @@ public class TableDetailInfo extends TableInfo{
 	private String family;
 	private Map<String,byte[]> columns;
 	
+	
 	public String getFamily() {
 		return family;
 	}

@@ -73,7 +73,7 @@ public abstract class AbstractUIManager {
 	public void changeUI(IView menu,boolean isCallUI) {
 		if(this.rootPanel==null) {
 			return;
-		}else if(menu==befView || isCallUI==false){
+		}else if(menu==befView){
 			return;
 		}
 		
@@ -84,7 +84,7 @@ public abstract class AbstractUIManager {
 		}
 		
 		IRootPanel nextPanel = getPanel(menu);				
-		boolean isMoved = changer.changeUI(nextPanel,menu);
+		boolean isMoved = isCallUI? true:changer.changeUI(nextPanel,menu);
 		if(isMoved){
 			nextPanel.startPanel();
 			this.befView = menu;

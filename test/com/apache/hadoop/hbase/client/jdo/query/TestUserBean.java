@@ -18,6 +18,18 @@ public class TestUserBean extends AbstractHBaseBean{
 	private String id;
 	@Column
 	private String name;
+	@Column
+	private String age;
+	@Column
+	private String mail;
+	@Column
+	private String address;
+	@Column
+	private String sex;
+	@Column
+	private String nick;
+	@Column
+	private String height;
 	
 	public TestUserBean() {		
 	}
@@ -34,4 +46,54 @@ public class TestUserBean extends AbstractHBaseBean{
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public String getNick() {
+		return nick;
+	}
+
+	public void setNick(String nick) {
+		this.nick = nick;
+	}
+
+	public String getHeight() {
+		return height;
+	}
+
+	public void setHeight(String height) {
+		this.height = height;
+	}
+	
+	
 }

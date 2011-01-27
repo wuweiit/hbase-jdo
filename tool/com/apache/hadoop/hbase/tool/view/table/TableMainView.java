@@ -139,7 +139,7 @@ public class TableMainView extends AbstractHPanel {
 			panelBottom.setLayout(new BorderLayout(0, 0));
 			panelBottom.add(getPanelTableMenu(), BorderLayout.NORTH);
 			
-			TableFamilyModel model = new TableFamilyModel();
+			TableColumnInfoModel model = new TableColumnInfoModel();
 			infoColumnPane = new HJTableScrollPane<TableDetailInfo>(model,null);
 			
 			panelBottom.add(infoColumnPane, BorderLayout.CENTER);

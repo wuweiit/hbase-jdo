@@ -28,16 +28,15 @@ public class ExcelButton extends JButton{
 	private void init() {
 		BufferedImage bi;
 		try {
-			URL url = this.getClass().getResource("/com/apache/hadoop/hbase/tool/comp/excel.jpg");
+			URL url = this.getClass().getResource("/com/apache/hadoop/hbase/tool/view/comp/excel.jpg");
 			bi = ImageIO.read(url);
 			Icon icon = new ImageIcon(bi); 
 			setIcon(icon);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		setText("Excel");
-		setPreferredSize(new Dimension(85, 20));
 	}
 	
 	

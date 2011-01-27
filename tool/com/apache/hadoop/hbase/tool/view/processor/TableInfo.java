@@ -8,6 +8,7 @@ public class TableInfo {
 	private long maxFileSize;
 	private long memStoreFlushSize;
 	private int familycount;
+	private String[] families;
 	
 	public String getName() {
 		return name;
@@ -34,6 +35,13 @@ public class TableInfo {
 		this.familycount = familycount;
 	}
 	
+
+	public String[] getFamilies() {
+		return families;
+	}
+	public void setFamilies(String[] families) {
+		this.families = families;
+	}
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this,ToStringStyle.MULTI_LINE_STYLE);

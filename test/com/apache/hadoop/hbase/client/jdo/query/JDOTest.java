@@ -14,11 +14,18 @@ import com.apache.hadoop.hbase.client.jdo.IHBaseLog;
  *
  */
 public class JDOTest extends TestCase implements IHBaseLog{
-	protected static final String TABLE = "user_info2";
+	protected static final String TABLE = "member";
 	protected static final String FAMILY = "user";
 	protected static final String COL_ID = "id";
 	protected static final String COL_NAME = "name";
-	protected static final String[] COLS = {COL_ID,COL_NAME};
+	protected static final String COL_AGE = "age";
+	protected static final String COL_MAIL = "mail";
+	protected static final String COL_ADDRESS = "address";
+	protected static final String COL_SEX = "sex";
+	protected static final String COL_NICK = "nick";
+	protected static final String COL_HEIGHT = "height";
+	
+	protected static final String[] COLS = {COL_ID,COL_NAME,COL_AGE,COL_MAIL,COL_ADDRESS,COL_SEX,COL_NICK,COL_HEIGHT};
 	protected AbstractHBaseDBO dbo = new HBaseDBOImpl();
 	
 	private long start;

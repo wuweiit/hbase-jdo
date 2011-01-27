@@ -29,7 +29,7 @@ public class InsertQueryTest extends JDOTest{
 	}
 	
 	public void testInsertStress() {
-		insertBox(1000000);
+		insertBox(100);
 	}
 	
 	public TestUserBean insert(){
@@ -37,6 +37,12 @@ public class InsertQueryTest extends JDOTest{
 		bean.set(TABLE,FAMILY);
 		bean.setId("testid-"+rand());
 		bean.setName("testname-"+rand());
+		bean.setAddress("address-"+rand());
+		bean.setAge(rand()+"");
+		bean.setHeight(rand()+"");
+		bean.setMail(rand()+"@mail.com");
+		bean.setNick("nick"+rand());
+		bean.setSex(rand()%2==0? "M":"W");
 		
 		// insert bean.
 		InsertQuery query = dbo.createInsertQuery(TABLE);

@@ -13,15 +13,15 @@ import com.apache.hadoop.hbase.tool.view.comp.table.AbstractHTableModel;
 import com.apache.hadoop.hbase.tool.view.comp.table.HTableColumn;
 import com.apache.hadoop.hbase.tool.view.processor.TableDetailInfo;
 
-public class TableFamilyModel extends AbstractHTableModel<TableDetailInfo>{
-	public TableFamilyModel() {
-		super(new ArrayList<TableDetailInfo>(), TableFamilyColumn.getColumns());
+public class TableColumnInfoModel extends AbstractHTableModel<TableDetailInfo>{
+	public TableColumnInfoModel() {
+		super(new ArrayList<TableDetailInfo>(), TableColumnInfoColumn.getColumns());
 	}
 
 	@Override
 	protected void resetColumns(List<TableDetailInfo> values) {
 		this.columns.clear();
-		this.columns.add(TableFamilyColumn.NAME);
+		this.columns.add(TableColumnInfoColumn.NAME);
 		int maxCount = 0;
 		for(TableDetailInfo tdi: values){
 			if(tdi.getColumnCount()>=maxCount){
@@ -30,7 +30,7 @@ public class TableFamilyModel extends AbstractHTableModel<TableDetailInfo>{
 		}
 		if(maxCount>0) {
 			for(int i=1;i<=maxCount;i++){
-				this.columns.add(new TableFamilyColumn(i,i+"","Column-"+i,160));
+				this.columns.add(new TableColumnInfoColumn(i,i+"","Column-"+i,160));
 			}
 		}
 	}
@@ -39,8 +39,8 @@ public class TableFamilyModel extends AbstractHTableModel<TableDetailInfo>{
 	public Object getValueAt(int r, int c) {
 		TableDetailInfo info = this.values.get(r);
 		
-		HTableColumn hcol = TableFamilyColumn.get(TableFamilyColumn.getColumns(),c);
-		if(hcol==TableFamilyColumn.NAME) return info.getName();
+		HTableColumn hcol = TableColumnInfoColumn.get(TableColumnInfoColumn.getColumns(),c);
+		if(hcol==TableColumnInfoColumn.NAME) return info.getName();
 		else{
 			Set<String> cols = info.getColumns().keySet();
 			int i = 0;
