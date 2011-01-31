@@ -34,7 +34,7 @@ public class TableDataModel extends AbstractHTableModel<TableDataBean>{
 		
 		int i=0; 
 		for(String name:makeColumnNames()) {
-			this.columns.add(new TableColumnInfoColumn(i,name,name,130));
+			this.columns.add(new TableColumnInfoColumn(i,name,name,150));
 			i++;
 		}
 	}

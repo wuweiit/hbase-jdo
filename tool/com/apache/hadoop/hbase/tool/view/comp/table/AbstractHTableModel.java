@@ -52,6 +52,11 @@ public abstract class AbstractHTableModel<T> extends AbstractTableModel{
 		
 	}
 	
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		HTableColumn col = columns.get(columnIndex);
+		return col.isEditable();
+	}
 	protected void resetColumns(List<T> values2) {
 		
 	}

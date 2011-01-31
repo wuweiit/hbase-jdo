@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import com.apache.hadoop.hbase.tool.view.AbstractHPanel;
-import com.apache.hadoop.hbase.tool.view.comp.table.HJTableScrollPane;
+import com.apache.hadoop.hbase.tool.view.comp.table.HJTablePanel;
 import com.apache.hadoop.hbase.tool.view.comp.table.ISelectedRowListener;
 import com.apache.hadoop.hbase.tool.view.processor.TableDetailInfo;
 import com.apache.hadoop.hbase.tool.view.processor.TableInfo;
@@ -30,8 +30,8 @@ public class TableMainView extends AbstractHPanel {
 	private JPanel panelTableMenu;
 	private JPanel panelBottom;
 
-	private HJTableScrollPane<TableInfo> infoTablePane;
-	private HJTableScrollPane<TableDetailInfo> infoColumnPane;
+	private HJTablePanel<TableInfo> infoTablePane;
+	private HJTablePanel<TableDetailInfo> infoColumnPane;
 	private JLabel lblGetColumnInformation;
 	private JLabel labelServer;
 	/**
@@ -110,7 +110,7 @@ public class TableMainView extends AbstractHPanel {
 			panelMiddle.setLayout(new BorderLayout(0, 0));
 			
 			TableListModel model = new TableListModel();
-			infoTablePane = new HJTableScrollPane<TableInfo>(model, new ISelectedRowListener<TableInfo>() {
+			infoTablePane = new HJTablePanel<TableInfo>(model, new ISelectedRowListener<TableInfo>() {
 				@Override
 				public void selected(int row, TableInfo data) {
 					String tableName = data.getName();
@@ -140,7 +140,7 @@ public class TableMainView extends AbstractHPanel {
 			panelBottom.add(getPanelTableMenu(), BorderLayout.NORTH);
 			
 			TableColumnInfoModel model = new TableColumnInfoModel();
-			infoColumnPane = new HJTableScrollPane<TableDetailInfo>(model,null);
+			infoColumnPane = new HJTablePanel<TableDetailInfo>(model,null);
 			
 			panelBottom.add(infoColumnPane, BorderLayout.CENTER);
 		}

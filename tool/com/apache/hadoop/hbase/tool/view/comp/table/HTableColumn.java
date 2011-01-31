@@ -8,12 +8,25 @@ public abstract class HTableColumn implements Serializable {
 	private int width;
 	private String id;
 	private String columnName;
+	private boolean isEditable;
 	
 	protected HTableColumn(int index,String id, String columnName, int width) {
+		this(index,id,columnName,width,false);
+	}
+	protected HTableColumn(int index,String id, String columnName, int width,boolean isEditable) {
 		this.index = index;
 		this.id = id;
 		this.columnName = columnName;
 		this.width = width;
+		this.isEditable = isEditable;
+	}
+
+	public boolean isEditable() {
+		return isEditable;
+	}
+
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
 	}
 
 	public int getWidth() {
