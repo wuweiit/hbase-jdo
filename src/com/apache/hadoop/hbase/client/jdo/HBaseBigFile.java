@@ -14,7 +14,8 @@ import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IOUtils;
+
+import com.apache.hadoop.hbase.tool.view.comp.IProgressHandler;
 
 /**
  * HBaseBigFile
@@ -33,6 +34,7 @@ import org.apache.hadoop.io.IOUtils;
  */
 public class HBaseBigFile implements IHBaseLog{
 	private Configuration conf = null;
+	private IProgressHandler handler;
 	public HBaseBigFile(){
 		this(new Configuration());
 	}
@@ -45,6 +47,14 @@ public class HBaseBigFile implements IHBaseLog{
 		return FileSystem.get(conf);
 	}
 	
+	public IProgressHandler getHandler() {
+		return handler;
+	}
+
+	public void setHandler(IProgressHandler handler) {
+		this.handler = handler;
+	}
+
 	public void close(OutputStream os){
 		if(os==null) return;
 		try { os.close(); } catch (IOException e) {}
@@ -89,8 +99,8 @@ public class HBaseBigFile implements IHBaseLog{
 			
 			fos = fs.create(p);
 			BufferedInputStream bis = new BufferedInputStream(is);
-			IOUtils.copyBytes(bis,fos,8192,true);
-//			copyBytes(bis,fos,8192,true);
+//			IOUtils.copyBytes(bis,fos,8192,true);
+			copyBytes(bis,fos,8192,true);
 						
 			isSuccess= true;
 		} catch (IOException e) {
@@ -123,6 +133,17 @@ public class HBaseBigFile implements IHBaseLog{
 			if(progress!=now) {			
 				log.debug("progress={}%",now);
 				progress = now;
+			}
+			if(handler!=null){
+				if(handler.keepGoing()==false){
+					throw new IOException("Handler called interrupt.");
+				}
+				handler.progress((int)current,(int)total);
+				try {
+					Thread.sleep(10L);
+				} catch (InterruptedException e) {
+					log.error("error",e);
+				}
 			}
 		}
 	}
@@ -165,7 +186,7 @@ public class HBaseBigFile implements IHBaseLog{
 			write2File(is,f);
 			isSuccess= true;
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("error",e);
 		}
 		return isSuccess;
 		
@@ -187,7 +208,7 @@ public class HBaseBigFile implements IHBaseLog{
 			copyBytes(bis,fos,8192,true);
 			isSuccess = true;
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("error",e);
 		} finally{
 			close(is);
 			close(fos);
