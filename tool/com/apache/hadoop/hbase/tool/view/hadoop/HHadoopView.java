@@ -2,10 +2,14 @@ package com.apache.hadoop.hbase.tool.view.hadoop;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -14,14 +18,19 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
+import com.apache.hadoop.hbase.client.jdo.HBaseBigFile;
+import com.apache.hadoop.hbase.client.jdo.util.HConfigUtil;
 import com.apache.hadoop.hbase.client.jdo.util.HUtil;
 import com.apache.hadoop.hbase.tool.view.AbstractHPanel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class HHadoopView extends AbstractHPanel {
 
@@ -36,6 +45,10 @@ public class HHadoopView extends AbstractHPanel {
 	private JPanel panelMenu;
 	private JButton btnSave;
 	private JButton btnUpload;
+	private JButton btnDelete;
+	private JButton btnRefresh;
+	
+	private DefaultTreeModel treeModel;
 	public HHadoopView() {
 		initialize();
 	}
@@ -53,32 +66,56 @@ public class HHadoopView extends AbstractHPanel {
 		add(getPanelMenu(), BorderLayout.SOUTH);
 	}
 	
+	private FileInfo getSelectedFile(){
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
+		FileInfo info = (FileInfo)node.getUserObject();
+		return info;
+	}
+	
+	private void addNode(DefaultMutableTreeNode parent, Path p){
+		FileStatus fst;
+		try {
+			fst = fs.getFileStatus(p);
+			DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+			node.setUserObject(new FileInfo(fst));
+			parent.add(node);
+			treeModel.nodeStructureChanged(parent);
+		} catch (IOException e) {
+			log.error("error",e);
+		}
+
+	}
+	
 	private void loadHadoop(){
 
 		try {
-			fs = FileSystem.get(new Configuration());
+			tree.removeAll();
+			fs = FileSystem.get(HConfigUtil.makeConfig());
 			node = createTree(new Path("/"));
+			log.debug("reloaded hadoop directory.");			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		DefaultTreeModel model = new DefaultTreeModel(node);
-		tree.setModel(model);
-		model.reload();
+		treeModel = new DefaultTreeModel(node);
+		
+		tree.setModel(treeModel);
+		treeModel.reload();
 	}
 
 	private DefaultMutableTreeNode createTree(Path p) throws IOException {
-		DefaultMutableTreeNode top = new DefaultMutableTreeNode();
+		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+		
 		FileStatus fst = fs.getFileStatus(p);
-		top.setUserObject(new FileInfo(fst));
+		node.setUserObject(new FileInfo(fst));
 		if(fst.isDir()) {
 			int i = 0;
 			for (FileStatus st : fs.listStatus(p)) {
-				top.insert(createTree(st.getPath()), i);
+				node.insert(createTree(st.getPath()), i);
 				i++;
 			}
 		}
-		return (top);
+		return node;
 	}
 
 	// ////
@@ -109,7 +146,7 @@ public class HHadoopView extends AbstractHPanel {
 				@Override
 				public void valueChanged(TreeSelectionEvent e) {
 					DefaultMutableTreeNode node = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
-					
+					if(node==null) return;
 					FileInfo fi = (FileInfo)node.getUserObject();
 					FileStatus fst = fi.getFileStatus();
 					
@@ -174,21 +211,97 @@ public class HHadoopView extends AbstractHPanel {
 	private JPanel getPanelMenu() {
 		if (panelMenu == null) {
 			panelMenu = new JPanel();
+			panelMenu.add(getBtnRefresh());
 			panelMenu.add(getBtnSave());
 			panelMenu.add(getBtnUpload());
+			panelMenu.add(getBtnDelete());
 		}
 		return panelMenu;
 	}
 	private JButton getBtnSave() {
 		if (btnSave == null) {
 			btnSave = new JButton("Save to Local");
+			btnSave.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					FileStatus fst = getSelectedFile().getFileStatus();
+					if(fst.isDir()){
+						showSimpleDialog("Select File.");
+						return;
+					}
+					JFileChooser  fc = new JFileChooser(new File("."));
+					int returnVal = fc.showOpenDialog(frame);
+
+		            if (returnVal == JFileChooser.APPROVE_OPTION) {						
+		                File file = fc.getSelectedFile();
+		                HBaseBigFile hb = new HBaseBigFile(HConfigUtil.makeHBaseConfig());
+		                hb.copyFile2Local(fst.getPath(),file);
+		            }
+				}
+			});
 		}
 		return btnSave;
 	}
 	private JButton getBtnUpload() {
 		if (btnUpload == null) {
 			btnUpload = new JButton("Upload to DFS");
+			btnUpload.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					FileStatus fst = getSelectedFile().getFileStatus();
+					if(fst.isDir()==false){
+						showSimpleDialog("Select Directory Path.");
+						return;
+					}
+					
+					JFileChooser  fc = new JFileChooser(new File("."));					
+					int returnVal = fc.showOpenDialog(frame);
+					
+					
+		            if (returnVal == JFileChooser.APPROVE_OPTION) {
+		                File file = fc.getSelectedFile();
+		                HBaseBigFile hb = new HBaseBigFile(HConfigUtil.makeHBaseConfig());
+		                boolean isSuccess = hb.uploadFile(fst.getPath(),file.getName(),file);
+		                if(isSuccess) {
+		                	DefaultMutableTreeNode parent = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
+		                	Path p = new Path(fst.getPath(),file.getName());
+		                	addNode(parent, p);
+		                }else{
+		                	showSimpleDialog("Cannot upload file");
+		                }
+		            }				
+		         }
+			});
 		}
 		return btnUpload;
+	}
+	private JButton getBtnDelete() {
+		if (btnDelete == null) {
+			btnDelete = new JButton("Delete");
+			btnDelete.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					HBaseBigFile hb = new HBaseBigFile(HConfigUtil.makeHBaseConfig());
+					TreePath treePath = tree.getSelectionPath();
+					int result = showConfirmDialog("Do you want to delete "+getSelectedFile().toString(),"Delete");
+					if(result!=JOptionPane.YES_OPTION) return;
+					try {
+						hb.delete(getSelectedFile().getFileStatus().getPath(),true);
+						treeModel.removeNodeFromParent((DefaultMutableTreeNode)tree.getLastSelectedPathComponent());
+					} catch (IOException e1) {
+						log.error("delete",e);
+					}
+				}
+			});
+		}
+		return btnDelete;
+	}
+	private JButton getBtnRefresh() {
+		if (btnRefresh == null) {
+			btnRefresh = new JButton("Refresh");
+			btnRefresh.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					loadHadoop();
+				}
+			});
+		}
+		return btnRefresh;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

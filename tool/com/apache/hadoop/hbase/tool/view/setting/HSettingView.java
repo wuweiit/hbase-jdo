@@ -1,24 +1,25 @@
 package com.apache.hadoop.hbase.tool.view.setting;
 
+import static com.apache.hadoop.hbase.client.jdo.IHBaseLog.log;
+
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.apache.hadoop.hbase.HBaseConfiguration;
 
 import com.apache.hadoop.hbase.client.jdo.util.HConfigUtil;
-import com.apache.hadoop.hbase.tool.HToolConstants;
 import com.apache.hadoop.hbase.tool.view.AbstractHPanel;
 import com.apache.hadoop.hbase.tool.view.comp.table.HJTablePanel;
-import javax.swing.JButton;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class HSettingView extends AbstractHPanel{
 

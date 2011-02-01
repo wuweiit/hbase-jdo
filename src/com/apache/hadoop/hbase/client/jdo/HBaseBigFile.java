@@ -2,6 +2,8 @@ package com.apache.hadoop.hbase.client.jdo;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,6 +54,14 @@ public class HBaseBigFile implements IHBaseLog{
 		try { is.close(); } catch (IOException e) {}
 	}
 	
+	public boolean uploadFile(Path directory,String filename,File file){
+		try {
+			return uploadFile(directory,filename,new FileInputStream(file),true);
+		} catch (FileNotFoundException e) {
+			log.error("error",e);
+		}
+		return false;
+	}
 	/**
 	 * upload file.
 	 * @param directory hadoop directory will be saved uploaded file. 
@@ -64,6 +74,7 @@ public class HBaseBigFile implements IHBaseLog{
 		boolean isSuccess=false;
 		FSDataOutputStream fos=null;		
 		try {
+			log.debug("try to upload "+filename+", to="+directory.getName());
 			Path p  = new Path(directory, new Path(filename));
 			FileSystem fs = getDFS();
 			if(fs.getFileStatus(directory).isDir()==false) {
@@ -83,7 +94,7 @@ public class HBaseBigFile implements IHBaseLog{
 						
 			isSuccess= true;
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("error",e);
 		} finally{
 			close(fos);
 		}
@@ -125,6 +136,7 @@ public class HBaseBigFile implements IHBaseLog{
 	public void delete(Path p, boolean recursive) throws IOException{
 		FileSystem fs = getDFS();
 		fs.delete(p, recursive);
+		log.debug("deleted {}",p);
 	}
 	
 	/**
