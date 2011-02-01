@@ -22,6 +22,7 @@ import com.apache.hadoop.hbase.client.jdo.query.HBaseOrder;
 import com.apache.hadoop.hbase.client.jdo.query.InsertQuery;
 import com.apache.hadoop.hbase.client.jdo.query.SelectQuery;
 import com.apache.hadoop.hbase.client.jdo.query.UpdateQuery;
+import com.apache.hadoop.hbase.client.jdo.util.HConfigUtil;
 
 /**
  * HBase DBO
@@ -35,7 +36,7 @@ public abstract class AbstractHBaseDBO implements IHBaseLog {
 
 	private HBasePoolManager pool;
 	public AbstractHBaseDBO() {
-		this(new HBaseConfiguration());
+		this(HConfigUtil.makeHBaseConfig());
 	}
 
 	public AbstractHBaseDBO(HBaseConfiguration config) {

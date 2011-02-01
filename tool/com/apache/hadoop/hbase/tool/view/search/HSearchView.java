@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -13,14 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.table.TableColumn;
 
 import com.apache.hadoop.hbase.tool.core.UIResult;
 import com.apache.hadoop.hbase.tool.view.AbstractHPanel;
 import com.apache.hadoop.hbase.tool.view.comp.ExcelButton;
 import com.apache.hadoop.hbase.tool.view.comp.table.HJTablePanel;
-import com.apache.hadoop.hbase.tool.view.comp.table.JComboBoxHeaderRenderer;
 import com.apache.hadoop.hbase.tool.view.processor.TableDataBean;
 import com.apache.hadoop.hbase.tool.view.processor.TableInfo;
 import com.apache.hadoop.hbase.tool.view.processor.TableProcessor;
@@ -67,6 +63,7 @@ public class HSearchView extends AbstractHPanel {
 
 	@Override
 	public void startPanel() {
+		log.debug("connect to quorum server.");
 		// setting tables.
 		List<TableInfo> tables = proc.getTableDesc();
 		String[] items = new String[tables.size() + 1];

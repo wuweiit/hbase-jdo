@@ -7,8 +7,11 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+
+import org.apache.hadoop.hbase.HBaseConfiguration;
 
 import com.apache.hadoop.hbase.tool.view.AbstractHPanel;
 import com.apache.hadoop.hbase.tool.view.comp.table.HJTablePanel;
@@ -16,9 +19,6 @@ import com.apache.hadoop.hbase.tool.view.comp.table.ISelectedRowListener;
 import com.apache.hadoop.hbase.tool.view.processor.TableDetailInfo;
 import com.apache.hadoop.hbase.tool.view.processor.TableInfo;
 import com.apache.hadoop.hbase.tool.view.processor.TableProcessor;
-import javax.swing.JLabel;
-
-import org.apache.hadoop.hbase.HBaseConfiguration;
 
 public class TableMainView extends AbstractHPanel {
 	private JPanel panelTopMenu;

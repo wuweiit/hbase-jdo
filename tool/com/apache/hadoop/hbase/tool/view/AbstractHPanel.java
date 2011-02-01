@@ -11,18 +11,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.apache.hadoop.hbase.client.jdo.IHBaseLog;
 import com.apache.hadoop.hbase.tool.core.IRootPanel;
 import com.apache.hadoop.hbase.tool.core.UIResult;
 
 /**
  * @author ncanis
  */
-public abstract class AbstractHPanel extends JPanel implements IRootPanel{
-	
-	public static final Logger UI_LOG = LoggerFactory.getLogger("hbase.jdo.tool"); 
+public abstract class AbstractHPanel extends JPanel implements IRootPanel, IHBaseLog{
 	protected final JFrame frame = UIManagerImpl.get().getFrame(); 
 	public final void showSimpleDialog(String message){		
 		JOptionPane.showMessageDialog(getParent(),message);

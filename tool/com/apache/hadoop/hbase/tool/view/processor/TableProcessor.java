@@ -3,7 +3,6 @@ package com.apache.hadoop.hbase.tool.view.processor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -22,6 +21,7 @@ import org.apache.hadoop.hbase.filter.PageFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import com.apache.hadoop.hbase.client.jdo.IHBaseLog;
+import com.apache.hadoop.hbase.client.jdo.util.HConfigUtil;
 
 public class TableProcessor implements IHBaseLog{
 	
@@ -33,7 +33,7 @@ public class TableProcessor implements IHBaseLog{
 		HBaseAdmin admin = null;
 		List<TableInfo> list = null;
 		try {
-			admin = new HBaseAdmin(new HBaseConfiguration());
+			admin = new HBaseAdmin(HConfigUtil.makeHBaseConfig());
 			HTableDescriptor[] desc = admin.listTables();
 			for(HTableDescriptor de:desc){
 				if(list==null) list = new ArrayList<TableInfo>();
@@ -71,7 +71,7 @@ public class TableProcessor implements IHBaseLog{
 		IndexedTable table = null;
 		List<TableDataBean> list = new ArrayList<TableDataBean>();
 		try {
-			table = new IndexedTable(new HBaseConfiguration(),tableName.getBytes());
+			table = new IndexedTable(HConfigUtil.makeHBaseConfig(),tableName.getBytes());
 			PageFilter pageFilter = new PageFilter(limit);
 			Scan scan = new Scan();
 			scan.setCaching(100);
@@ -121,7 +121,7 @@ public class TableProcessor implements IHBaseLog{
 		HTable table = null;
 		List<TableDetailInfo> list = new ArrayList<TableDetailInfo>();
 		try {
-			table = new HTable(tableName);
+			table = new HTable(HConfigUtil.makeHBaseConfig(),tableName);
 			Scan scan = new Scan();
 			ResultScanner rs = table.getScanner(scan);
 			Result r = rs.next();

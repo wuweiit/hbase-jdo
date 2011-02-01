@@ -11,6 +11,8 @@ import javax.swing.JDialog;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
+import com.apache.hadoop.hbase.client.jdo.util.HUtil;
+
 public class DateTimePickerEditor extends AbstractCellEditor implements
 		TableCellEditor, ActionListener {
 

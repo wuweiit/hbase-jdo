@@ -1,7 +1,6 @@
 package com.apache.hadoop.hbase.tool.core;
 
 import java.util.Hashtable;
-import java.util.Properties;
 
 
 /**

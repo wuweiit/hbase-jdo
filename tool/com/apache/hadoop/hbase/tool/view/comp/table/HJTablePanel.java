@@ -2,7 +2,6 @@ package com.apache.hadoop.hbase.tool.view.comp.table;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.DefaultCellEditor;
@@ -11,11 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import com.apache.hadoop.hbase.tool.view.comp.HDataType;
 
@@ -46,6 +43,7 @@ public class HJTablePanel<T> extends JPanel{
 			add(makeTypeTable(),BorderLayout.EAST);
 		}
 	}
+	
 	public void loadModelData(List<T> list){
 		this.model.setData(list);
 		this.model.fireTableDataChanged();

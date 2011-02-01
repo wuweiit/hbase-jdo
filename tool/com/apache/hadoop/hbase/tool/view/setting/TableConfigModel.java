@@ -1,7 +1,19 @@
 package com.apache.hadoop.hbase.tool.view.setting;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+
+import com.apache.hadoop.hbase.client.jdo.util.HConfigUtil;
+import com.apache.hadoop.hbase.tool.HBaseTool;
+import com.apache.hadoop.hbase.tool.HToolConstants;
 import com.apache.hadoop.hbase.tool.view.comp.table.AbstractHTableModel;
 import com.apache.hadoop.hbase.tool.view.comp.table.HTableColumn;
 
@@ -27,7 +39,11 @@ public class TableConfigModel extends AbstractHTableModel<HConfigInfo>{
 		if(hcol.isEditable()==false) return;
 		
 		HConfigInfo info = values.get(rowIndex);
-		info.setValue(aValue.toString());		
+		info.setValue(aValue.toString());
+	
+		String pName = getValueAt(rowIndex,0).toString();
+		String pValue = aValue.toString();
+		HConfigUtil.saveProperty(pName,pValue);			
 		
 		this.fireTableDataChanged();
 	}

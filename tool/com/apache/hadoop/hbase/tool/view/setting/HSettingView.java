@@ -11,8 +11,14 @@ import javax.swing.JTabbedPane;
 
 import org.apache.hadoop.hbase.HBaseConfiguration;
 
+import com.apache.hadoop.hbase.client.jdo.util.HConfigUtil;
+import com.apache.hadoop.hbase.tool.HToolConstants;
 import com.apache.hadoop.hbase.tool.view.AbstractHPanel;
 import com.apache.hadoop.hbase.tool.view.comp.table.HJTablePanel;
+import javax.swing.JButton;
+import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class HSettingView extends AbstractHPanel{
 
@@ -25,6 +31,8 @@ public class HSettingView extends AbstractHPanel{
 	private HJTablePanel<HConfigInfo> hadoop;
 	private TableConfigModel hbaseModel;
 	private TableConfigModel hadoopModel;
+	private JPanel panel;
+	private JButton btnReload;
 	
 	public HSettingView(){
 		initialize();
@@ -40,10 +48,12 @@ public class HSettingView extends AbstractHPanel{
 		//test
 //		hbaseModel.loadTestData(10);
 		loadData();
+		add(getPanel(), BorderLayout.SOUTH);
 	}
 	
 	private void loadData(){
-		HBaseConfiguration config = new HBaseConfiguration();
+		log.debug("loaded "+HConfigUtil.HBASE_CONFIG);
+		HBaseConfiguration config = HConfigUtil.makeHBaseConfig();
 		Iterator<Entry<String, String>> it = config.iterator();
 		
 		List<HConfigInfo> listHBase = new ArrayList<HConfigInfo>();
@@ -76,6 +86,7 @@ public class HSettingView extends AbstractHPanel{
 	}
 	@Override
 	public void startPanel() {
+		loadData();
 	}
 	@Override
 	public void clearPanel() {
@@ -101,8 +112,7 @@ public class HSettingView extends AbstractHPanel{
 			panelHBase.setLayout(new BorderLayout(0, 0));
 			
 			hbaseModel = new TableConfigModel();
-			hbase = new HJTablePanel<HConfigInfo>(hbaseModel, null);
-			
+			hbase = new HJTablePanel<HConfigInfo>(hbaseModel, null);			
 			panelHBase.add(hbase,BorderLayout.CENTER);
 		}
 		return panelHBase;
@@ -118,5 +128,25 @@ public class HSettingView extends AbstractHPanel{
 			panelHadoop.add(hadoop,BorderLayout.CENTER);
 		}
 		return panelHadoop;
+	}
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+			flowLayout.setAlignment(FlowLayout.RIGHT);
+			panel.add(getBtnReload());
+		}
+		return panel;
+	}
+	private JButton getBtnReload() {
+		if (btnReload == null) {
+			btnReload = new JButton("Reload");
+			btnReload.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					loadData();
+				}
+			});
+		}
+		return btnReload;
 	}
 }  //  @jve:decl-index=0:visual-constraint="10,10"

@@ -1,14 +1,22 @@
 package com.apache.hadoop.hbase.tool.view;
 
+import static com.apache.hadoop.hbase.client.jdo.IHBaseLog.log;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.PrintStream;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 
@@ -24,12 +32,6 @@ import com.apache.hadoop.hbase.tool.view.hadoop.HHadoopView;
 import com.apache.hadoop.hbase.tool.view.search.HSearchView;
 import com.apache.hadoop.hbase.tool.view.setting.HSettingView;
 import com.apache.hadoop.hbase.tool.view.table.TableMainView;
-import javax.swing.JSplitPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 /**
  * @author ncanis
@@ -180,25 +182,12 @@ public class HMainPanel extends AbstractHPanel implements IRootPanel,IChanger, I
 	 * 	
 	 * @return javax.swing.JTextField	
 	 */
-	private JTextArea getTaMessage() {
+	public JTextArea getTaMessage() {
 		if (taMessage == null) {
 			taMessage = new JTextArea();
 			taMessage.setLineWrap(true);
 			taMessage.setAutoscrolls(true);
 			taMessage.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));	
-			
-			ConsoleStream cs = new ConsoleStream(System.out,new IConsoleHandler() {
-				@Override
-				public void message(String msg) {
-					taMessage.append(msg);
-					log.debug(msg);
-				}
-			});
-			PrintStream ps = new PrintStream(cs);
-			System.setOut(ps);
-			System.setErr(ps);
-			
-			
 		}
 		return taMessage;
 	}

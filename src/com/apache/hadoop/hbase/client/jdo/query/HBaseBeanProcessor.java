@@ -18,10 +18,10 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import com.apache.hadoop.hbase.client.jdo.AbstractHBaseBean;
 import com.apache.hadoop.hbase.client.jdo.HBaseJDOException;
-import com.apache.hadoop.hbase.client.jdo.HBaseJDOUtil;
 import com.apache.hadoop.hbase.client.jdo.IHBaseLog;
 import com.apache.hadoop.hbase.client.jdo.anotation.Column;
 import com.apache.hadoop.hbase.client.jdo.anotation.Index;
+import com.apache.hadoop.hbase.client.jdo.util.HUtil;
 
 /**
  * This class is for Result convertor
@@ -98,7 +98,7 @@ public class HBaseBeanProcessor implements IHBaseLog{
 					String colName = Bytes.toString(col);
 					Field field = getField(fieldList,colName);
 					if(field!=null) {
-						BeanUtils.setProperty(bean,colName, HBaseJDOUtil.makeValue(field.getType(),values));
+						BeanUtils.setProperty(bean,colName, HUtil.makeValue(field.getType(),values));
 					}
 				}
 			}
@@ -168,7 +168,7 @@ public class HBaseBeanProcessor implements IHBaseLog{
 		Properties p = new Properties();
 		for(Field f:list){
 			Object value = PropertyUtils.getProperty(bean,f.getName());
-			p.put(f.getName(),HBaseJDOUtil.toBytes(value));
+			p.put(f.getName(),HUtil.toBytes(value));
 		}
 		return p;
 	}

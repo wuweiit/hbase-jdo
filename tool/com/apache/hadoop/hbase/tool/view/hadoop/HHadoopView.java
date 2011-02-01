@@ -2,14 +2,13 @@ package com.apache.hadoop.hbase.tool.view.hadoop;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 
-import com.apache.hadoop.hbase.tool.core.UIResult;
-import com.apache.hadoop.hbase.tool.view.AbstractHPanel;
-import com.apache.hadoop.hbase.tool.view.comp.HUtil;
-
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -20,10 +19,9 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JButton;
+
+import com.apache.hadoop.hbase.client.jdo.util.HUtil;
+import com.apache.hadoop.hbase.tool.view.AbstractHPanel;
 
 public class HHadoopView extends AbstractHPanel {
 

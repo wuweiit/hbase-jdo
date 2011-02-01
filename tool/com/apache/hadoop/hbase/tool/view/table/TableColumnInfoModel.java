@@ -1,6 +1,5 @@
 package com.apache.hadoop.hbase.tool.view.table;
 
-import java.awt.FontMetrics;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

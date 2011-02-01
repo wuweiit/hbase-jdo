@@ -26,7 +26,7 @@ import org.apache.hadoop.hbase.util.Bytes;
 import com.apache.hadoop.hbase.client.jdo.AbstractHBaseBean;
 import com.apache.hadoop.hbase.client.jdo.AbstractHBaseDBO;
 import com.apache.hadoop.hbase.client.jdo.HBaseJDOException;
-import com.apache.hadoop.hbase.client.jdo.HBaseJDOUtil;
+import com.apache.hadoop.hbase.client.jdo.util.HUtil;
 
 /**
  * Selection Query.
@@ -148,7 +148,7 @@ public class SelectQuery extends HBQuery{
 		Get g = new Get(row);
 		Result r = state==null? table.get(g):table.get(state,g);
 		byte[] data = r.getValue(Bytes.toBytes(family), Bytes.toBytes(col));
-		return HBaseJDOUtil.makeValue(type,data);
+		return HUtil.makeValue(type,data);
 	}
 	
 	/**

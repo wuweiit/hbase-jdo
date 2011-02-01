@@ -7,7 +7,7 @@ import java.util.Set;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import com.apache.hadoop.hbase.client.jdo.HBaseJDOException;
-import com.apache.hadoop.hbase.client.jdo.HBaseJDOUtil;
+import com.apache.hadoop.hbase.client.jdo.util.HUtil;
 
 /**
  * HBase Query Parameter Information.
@@ -80,7 +80,7 @@ public class HBaseParam {
 	 */
 	public boolean addSearchOption(String col, Object value, QSearch op){
 		if(value==null) value = new byte[0];
-		SearchInfo si = new SearchInfo(col,HBaseJDOUtil.toBytes(value),op);
+		SearchInfo si = new SearchInfo(col,HUtil.toBytes(value),op);
 		
 		boolean isSuccess = this.options.put(col, si)==null? true:false;
 		return isSuccess;
