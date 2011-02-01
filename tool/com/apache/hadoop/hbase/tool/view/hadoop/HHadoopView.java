@@ -29,6 +29,9 @@ import com.apache.hadoop.hbase.client.jdo.HBaseBigFile;
 import com.apache.hadoop.hbase.client.jdo.util.HConfigUtil;
 import com.apache.hadoop.hbase.client.jdo.util.HUtil;
 import com.apache.hadoop.hbase.tool.view.AbstractHPanel;
+import com.apache.hadoop.hbase.tool.view.comp.IProgressWork;
+import com.apache.hadoop.hbase.tool.view.comp.ProgressDialog;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -223,7 +226,7 @@ public class HHadoopView extends AbstractHPanel {
 			btnSave = new JButton("Save to Local");
 			btnSave.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					FileStatus fst = getSelectedFile().getFileStatus();
+					final FileStatus fst = getSelectedFile().getFileStatus();
 					if(fst.isDir()){
 						showSimpleDialog("Select File.");
 						return;
@@ -232,9 +235,27 @@ public class HHadoopView extends AbstractHPanel {
 					int returnVal = fc.showOpenDialog(frame);
 
 		            if (returnVal == JFileChooser.APPROVE_OPTION) {						
-		                File file = fc.getSelectedFile();
-		                HBaseBigFile hb = new HBaseBigFile(HConfigUtil.makeHBaseConfig());
-		                hb.copyFile2Local(fst.getPath(),file);
+		                final File file = fc.getSelectedFile();
+		                final HBaseBigFile hb = new HBaseBigFile(HConfigUtil.makeHBaseConfig());
+		                final ProgressDialog pdg = new ProgressDialog(frame,file.getName());
+		                pdg.setLocationRelativeTo(frame);
+		                hb.setHandler(pdg);
+		                pdg.setSize(300,150);
+		                new Thread(){
+		                	public void run(){
+		                		pdg.setVisible(true);
+		                	}}.start();
+		                
+		                new Thread(){
+		                	public void run(){
+		                		 boolean isSuccess = hb.copyFile2Local(fst.getPath(),file);
+		                		 if(isSuccess){
+		                			 showSimpleDialog("Download completed.");
+		                		 }else{
+		                			 showSimpleDialog("Fail to download");
+		                		 }
+		                	}
+		                }.start();
 		            }
 				}
 			});
@@ -246,7 +267,7 @@ public class HHadoopView extends AbstractHPanel {
 			btnUpload = new JButton("Upload to DFS");
 			btnUpload.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					FileStatus fst = getSelectedFile().getFileStatus();
+					final FileStatus fst = getSelectedFile().getFileStatus();
 					if(fst.isDir()==false){
 						showSimpleDialog("Select Directory Path.");
 						return;
@@ -257,16 +278,31 @@ public class HHadoopView extends AbstractHPanel {
 					
 					
 		            if (returnVal == JFileChooser.APPROVE_OPTION) {
-		                File file = fc.getSelectedFile();
-		                HBaseBigFile hb = new HBaseBigFile(HConfigUtil.makeHBaseConfig());
-		                boolean isSuccess = hb.uploadFile(fst.getPath(),file.getName(),file);
-		                if(isSuccess) {
-		                	DefaultMutableTreeNode parent = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
-		                	Path p = new Path(fst.getPath(),file.getName());
-		                	addNode(parent, p);
-		                }else{
-		                	showSimpleDialog("Cannot upload file");
-		                }
+		                final File file = fc.getSelectedFile();
+		                final HBaseBigFile hb = new HBaseBigFile(HConfigUtil.makeHBaseConfig());
+		                
+		                final ProgressDialog pdg = new ProgressDialog(frame,file.getName());
+		                pdg.setLocationRelativeTo(frame);
+		                hb.setHandler(pdg);
+		                pdg.setSize(300,150);
+		                new Thread(){
+		                	public void run(){
+		                		pdg.setVisible(true);
+		                	}}.start();
+		                
+		                new Thread(){
+		                	public void run(){
+		                		boolean isSuccess = hb.uploadFile(fst.getPath(),file.getName(),file);
+				                if(isSuccess) {
+				                	DefaultMutableTreeNode parent = (DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
+				                	Path p = new Path(fst.getPath(),file.getName());
+				                	addNode(parent, p);
+				                	showSimpleDialog("Upload completed.");
+				                }else{
+				                	showSimpleDialog("Fail to upload file");
+				                }
+		                	}
+		                }.start();
 		            }				
 		         }
 			});
