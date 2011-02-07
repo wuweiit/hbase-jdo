@@ -15,6 +15,7 @@ import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
+import com.apache.hadoop.hbase.client.jdo.util.HUtil;
 import com.apache.hadoop.hbase.tool.view.comp.IProgressHandler;
 
 /**
@@ -139,11 +140,7 @@ public class HBaseBigFile implements IHBaseLog{
 					throw new IOException("Handler called interrupt.");
 				}
 				handler.progress((int)current,(int)total);
-				try {
-					Thread.sleep(10L);
-				} catch (InterruptedException e) {
-					log.error("error",e);
-				}
+				HUtil.sleep(1L);
 			}
 		}
 	}
