@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.hadoop.hbase.util.Bytes;
 
+import com.apache.hadoop.hbase.client.jdo.util.HUtil;
+
 
 
 /**
@@ -29,6 +31,8 @@ public class SelectQueryTest extends JDOTest{
 		// select column.
 		start();
 		TestUserBean bean = list.get(0);
+		log.debug("Time={}",HUtil.makeSimpleDate(bean.getTimeCalendar()));
+		
 		String id = (String)sQuery.selectColumn(bean.getRow(),FAMILY,COL_ID,String.class);
 		assertNotNull(id);
 		log.debug("got id={} data from {} row",id,Bytes.toLong(bean.getRow()));
@@ -54,7 +58,7 @@ public class SelectQueryTest extends JDOTest{
 		
 		// confirm column value existing.
 		start();
-		assertTrue(sQuery.existColumnValue(bean.getFamily(),COL_ID,"testid-0".getBytes()));
+		assertTrue(sQuery.existColumnValue(bean.getFamily(),COL_ID,"testid-74".getBytes()));
 		end("existColumnValue");
 		
 		// search with start row.

@@ -86,6 +86,8 @@ public class HBaseBeanProcessor implements IHBaseLog{
 			List<Field> fieldList = getColumns(c);
 			// family, qualifier(key,value)
 			NavigableMap<byte[],NavigableMap<byte[],byte[]>> map = r.getNoVersionMap();
+			
+			bean.setTime(r.getCellValue().getTimestamp());
 			Set<byte[]> families = map.keySet();
 			for(byte[] family:families){
 				bean.setFamily(Bytes.toString(family));

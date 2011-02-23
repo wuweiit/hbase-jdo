@@ -124,7 +124,6 @@ public class HBaseClient extends AbstractHBase{
 		// row key
 		Get g = new Get(rowKey);
 		Result r = table.get(g);
-
 		String name = Bytes.toString(r.getValue(COL_FAMILY_USER_B, "name".getBytes()));
 		String age = Bytes.toString(r.getValue(COL_FAMILY_USER_B, "age".getBytes()));
 		log.debug("### Get name={},age={}", name, age);

@@ -1,5 +1,7 @@
 package com.apache.hadoop.hbase.client.jdo;
 
+import java.util.Calendar;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -29,8 +31,11 @@ public abstract class AbstractHBaseBean {
 	protected String tableName; // table name
 	protected byte[] row;		// row key(should be long type)
 	protected String family;	// family key.
+	private long time;
+	private Calendar cal;
 	
 	public AbstractHBaseBean(){
+		cal = Calendar.getInstance();
 	}
 	
 	public AbstractHBaseBean(String family){
@@ -56,6 +61,19 @@ public abstract class AbstractHBaseBean {
 	}
 	public String getFamily() {
 		return family;
+	}
+
+	public long getTime() {
+		return time;
+	}
+
+	public void setTime(long time) {
+		this.time = time;
+		this.cal.setTimeInMillis(time);
+	}
+	
+	public Calendar getTimeCalendar(){
+		return cal;
 	}
 
 	@Override
