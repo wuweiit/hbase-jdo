@@ -15,7 +15,7 @@
 	<!-- Hbase Master Info -->
 	<property>
 		<name>hbase.master</name>
-		<value>192.168.0.203:9102</value>
+		<value>192.168.0.203:60000</value>
 		<description>By default ZK is configured with localhost which means
 			the client
 			should run on the same physical machine. Configure this if client runs on a
@@ -33,7 +33,7 @@
 	<!-- 분산 클러스터 인경우 =true -->
 	<property>
 		<name>hbase.cluster.distributed</name>
-		<value>false</value>
+		<value>true</value>
 		<description>The mode the cluster will be in. Possible values are
 			false: standalone and pseudo-distributed setups with managed
 			Zookeeper
