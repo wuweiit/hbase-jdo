@@ -148,7 +148,7 @@ public abstract class AbstractHBaseDBO implements IHBaseLog {
 	 * @return
 	 */
 	public final IndexSpecification makeSpec(String family, String id) {
-		IndexSpecification isf = new IndexSpecification(id, (family + ":" + id).getBytes());
+		IndexSpecification isf = new IndexSpecification("_"+family+"_"+id, (family + ":" + id).getBytes());
 		return isf;
 	}
 
