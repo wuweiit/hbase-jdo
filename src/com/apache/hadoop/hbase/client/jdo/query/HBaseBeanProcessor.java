@@ -22,6 +22,7 @@ import com.apache.hadoop.hbase.client.jdo.IHBaseLog;
 import com.apache.hadoop.hbase.client.jdo.anotation.Column;
 import com.apache.hadoop.hbase.client.jdo.anotation.Index;
 import com.apache.hadoop.hbase.client.jdo.util.HUtil;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type;
 
 /**
  * This class is for Result convertor
@@ -100,6 +101,7 @@ public class HBaseBeanProcessor implements IHBaseLog{
 					String colName = Bytes.toString(col);
 					Field field = getField(fieldList,colName);
 					if(field!=null) {
+						colName = convertFieldName(field);
 						BeanUtils.setProperty(bean,colName, HUtil.makeValue(field.getType(),values));
 					}
 				}
@@ -166,13 +168,31 @@ public class HBaseBeanProcessor implements IHBaseLog{
 	 * @throws Exception
 	 */
 	public Properties toProperties(AbstractHBaseBean bean, ANT_TYPE type) throws Exception{
-		List<Field> list = getAnotationFields(bean.getClass(), type);
+		List<Field> list = getAnotationFields(bean.getClass(), type);		
 		Properties p = new Properties();
 		for(Field f:list){
-			Object value = PropertyUtils.getProperty(bean,f.getName());
-			p.put(f.getName(),HUtil.toBytes(value));
+			String name = convertFieldName(f);
+			Object value = PropertyUtils.getProperty(bean,name);
+			byte[] data = HUtil.toBytes(value);
+			if(data==null) data = new byte[0];
+			p.put(f.getName(),data);
 		}
 		return p;
+	}
+	
+	public String convertFieldName(Field f) {
+		String name = f.getName();
+		if(isBooleanType(f.getType()) && f.getName().startsWith("is")) {
+			name = name.substring("is".length(),name.length());
+			
+			String fC = name.substring(0,1).toLowerCase();
+			name = name.replaceFirst(name.substring(0,1),fC);				
+		}
+		return name;
+	}
+	
+	public boolean isBooleanType(Class c){
+		return c.equals(Boolean.TYPE) || c.equals(Boolean.class);
 	}
 
 	/**
