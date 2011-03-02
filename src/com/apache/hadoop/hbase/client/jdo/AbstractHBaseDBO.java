@@ -227,12 +227,10 @@ public abstract class AbstractHBaseDBO implements IHBaseLog {
 			admin = new IndexedTableAdmin(config);
 			admin.disableTable(table);
 			for (IndexSpecification is : columns) {
-				log.debug("creating index... {}", is.getIndexId());
 				admin.addIndex(table.getBytes(), is);
-				log.debug("added index ={} in table={}", is.getIndexId(), table);
+				log.debug("created indexTable={}{}", table,is.getIndexId());
 			}
 			isSuccess = true;
-			log.debug("created index table ={}", table);
 		} catch (IOException e) {
 			log.error("addIndexExistingTable", e);
 		}
@@ -253,7 +251,7 @@ public abstract class AbstractHBaseDBO implements IHBaseLog {
 		try {
 			admin = new IndexedTableAdmin(config);
 			admin.removeIndex(table.getBytes(), indexID);
-			log.debug("removed index ={}", indexID);
+			log.debug("removed indexTable ={}{}", table,indexID);
 			isSuccess = true;
 		} catch (IOException e) {
 			log.error("removeIndex", e);
