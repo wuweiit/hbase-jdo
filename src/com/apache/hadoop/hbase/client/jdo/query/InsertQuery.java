@@ -28,8 +28,8 @@ public class InsertQuery extends HBQuery{
 	 * default order is asc
 	 * @param list
 	 */
-	public void insert(List<AbstractHBaseBean> list){
-		insert(list.toArray(new AbstractHBaseBean[list.size()]));
+	public boolean insert(List<AbstractHBaseBean> list){
+		return insert(list.toArray(new AbstractHBaseBean[list.size()]));
 	}
 	
 	/**
@@ -38,9 +38,9 @@ public class InsertQuery extends HBQuery{
 	 * @param state
 	 * @param list
 	 */
-	public void insert(IndexedTable table,TransactionState state,List<AbstractHBaseBean> list){
+	public boolean insert(IndexedTable table,TransactionState state,List<AbstractHBaseBean> list){
 		
-		insert(table,state,list.toArray(new AbstractHBaseBean[list.size()]));
+		return insert(table,state,list.toArray(new AbstractHBaseBean[list.size()]));
 	}
 
 	/**
@@ -48,13 +48,18 @@ public class InsertQuery extends HBQuery{
 	 * default order is asc
 	 * @param list
 	 */
-	public void insert(final AbstractHBaseBean... list){
-		work(new IHBaseWork() {
-			@Override
-			public void work(IndexedTable table) {
-				insert(table,null,list);
-			}
-		});
+	public boolean insert(final AbstractHBaseBean... list){
+		boolean isSuccess = false;
+		IndexedTable table = null;
+		try{
+			table = borrowTable();
+			isSuccess = insert(table,null,list);
+		}catch(Exception e){
+			log.error("work",e);
+		}finally{
+			releaseTable(table);
+		}
+		return isSuccess;
 	}
 	
 
@@ -64,7 +69,8 @@ public class InsertQuery extends HBQuery{
 	 * @param order
 	 * @param list
 	 */
-	public void insert(IndexedTable table, TransactionState state, AbstractHBaseBean... list){
+	public boolean insert(IndexedTable table, TransactionState state, AbstractHBaseBean... list){
+		boolean isSuccess=false;
 		try {			
 			List<Put> puts = null;
 			for(AbstractHBaseBean bean: list) {
@@ -88,8 +94,10 @@ public class InsertQuery extends HBQuery{
 			if(state==null) {
 				table.put(puts);
 			}
+			isSuccess = true;
 		} catch (Exception e) {
 			log.error("insert Bean",e);
 		}
+		return isSuccess;
 	}
 }
