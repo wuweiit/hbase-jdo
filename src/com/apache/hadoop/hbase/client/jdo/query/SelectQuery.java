@@ -174,12 +174,12 @@ public class SelectQuery extends HBQuery{
 		byte[] endRow = null;
 		
 		// get first index column.
-		IndexSpecification is = dbo.getFirstIndexColumn(tableName,options.keySet());
+		IndexSpecification is = dbo.getFirstIndexColumn(tableName,family,options.keySet());
 		if(is==null) {
 			log.error("Search", new HBaseJDOException("You must have index column in search options"));
 			return null;			
 		}else{
-			SearchInfo si = options.get(is.getIndexId());
+			SearchInfo si = options.get(dbo.makeColName(is.getIndexId()));
 			startRow = Bytes.add(si.getValue(),startRow); // start row= column value + base row key
 		}
 		

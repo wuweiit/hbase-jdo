@@ -148,8 +148,17 @@ public abstract class AbstractHBaseDBO implements IHBaseLog {
 	 * @return
 	 */
 	public final IndexSpecification makeSpec(String family, String id) {
-		IndexSpecification isf = new IndexSpecification("_"+family+"_"+id, (family + ":" + id).getBytes());
+		IndexSpecification isf = new IndexSpecification(makeIndexID(family,id), (family + ":" + id).getBytes());
 		return isf;
+	}
+	
+	public final String makeIndexID(String family, String colName){
+		return "_"+family+"_"+colName;
+	}
+	
+	public final String makeColName(String indexID){
+		int pos = indexID.lastIndexOf("_");
+		return indexID.substring(pos+1,indexID.length());
 	}
 
 	/**
@@ -340,14 +349,18 @@ public abstract class AbstractHBaseDBO implements IHBaseLog {
 	 * @param cols
 	 * @return
 	 */
-	public IndexSpecification getFirstIndexColumn(String tableName, Collection<String> cols) {
+	public IndexSpecification getFirstIndexColumn(String tableName, String family,Collection<String> cols) {
 		Collection<IndexSpecification> indexes = getIndexList(tableName);
 		if(indexes==null) return null;
 		for (IndexSpecification index : indexes) {
-			for (String col : cols) {
-				if (index.getIndexId().equals(col)) {
-					return index;
-				}
+			byte[][] idxCols = index.getIndexedColumns();
+			for(byte[] idc:idxCols){				
+				String idxName = new String(idc); // family:name
+				for (String col : cols) {
+					if (idxName.equals(family+":"+col)) {
+						return index;
+					}
+				}				
 			}
 		}
 
