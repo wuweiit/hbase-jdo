@@ -87,22 +87,33 @@ public abstract class AbstractHBaseDBO implements IHBaseLog {
 
 	/**
 	 * delete table
+	 * @param tables
+	 * @return
+	 */
+	public boolean deleteTable(String... tables) {
+		return deleteTable(true,tables);
+	}
+	/**
+	 * delete table
 	 * 
 	 * @throws IOException
 	 */
-	public boolean deleteTable(String... tables) {
+	public boolean deleteTable(boolean isRemoveIndexTable, String... tables) {
 		boolean isSuccess = false;
+		IndexedTableAdmin admin = null;
 		try {
-			IndexedTableAdmin admin = new IndexedTableAdmin(config);
+			admin = new IndexedTableAdmin(config);
 			for (String table : tables) {
-				removeIndexAll(table);
+				if(isRemoveIndexTable) removeIndexAll(table);
 				// must diable before delete
 				admin.disableTable(table);
 				admin.deleteTable(table);
 				log.debug("deleted table={}", table);
 			}
+			isSuccess = true;
 		} catch (IOException e) {
 			log.error("deleteTable error", e);
+		} finally{
 		}
 		return isSuccess;
 	}
@@ -153,14 +164,14 @@ public abstract class AbstractHBaseDBO implements IHBaseLog {
 	}
 	
 	public final String makeIndexID(String family, String colName){
-//		return family+"-"+colName;
-		return colName;
+		return family+"-"+colName;
+//		return colName;
 	}
 	
 	public final String makeColName(String indexID){
-//		int pos = indexID.lastIndexOf("-");
-//		return indexID.substring(pos+1,indexID.length());
-		return indexID;
+		int pos = indexID.lastIndexOf("-");
+		return indexID.substring(pos+1,indexID.length());
+//		return indexID;
 	}
 
 	/**

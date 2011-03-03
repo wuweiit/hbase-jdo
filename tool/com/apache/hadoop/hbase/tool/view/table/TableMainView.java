@@ -37,6 +37,7 @@ public class TableMainView extends AbstractHPanel {
 	private HJTablePanel<TableDetailInfo> infoColumnPane;
 	private JLabel lblGetColumnInformation;
 	private JLabel labelServer;
+	private JButton btnNewButton;
 	/**
 	 * Create the panel.
 	 */
@@ -65,6 +66,7 @@ public class TableMainView extends AbstractHPanel {
 			panelTopMenu.add(getButtonAllTables());
 			panelTopMenu.add(getBtnCreate());
 			panelTopMenu.add(getBtnDelete());
+			panelTopMenu.add(getBtnNewButton());
 		}
 		return panelTopMenu;
 	}
@@ -199,5 +201,21 @@ public class TableMainView extends AbstractHPanel {
 			labelServer = new JLabel("New label");
 		}
 		return labelServer;
+	}
+	private JButton getBtnNewButton() {
+		if (btnNewButton == null) {
+			btnNewButton = new JButton("DeleteAll");
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int result = JOptionPane.showConfirmDialog(frame,"Do you want to delete all tables?");
+					if(result==JOptionPane.YES_OPTION){						
+						TableProcessor proc = new TableProcessor();
+						proc.deleteAllTables();
+						infoTablePane.loadModelData(proc.getTableDesc());
+					}
+				}
+			});
+		}
+		return btnNewButton;
 	}
 }

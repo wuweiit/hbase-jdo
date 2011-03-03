@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Set;
 
-import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
@@ -20,11 +19,19 @@ import org.apache.hadoop.hbase.client.tableindexed.IndexedTable;
 import org.apache.hadoop.hbase.filter.PageFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 
+import com.apache.hadoop.hbase.client.jdo.HBaseDBOImpl;
 import com.apache.hadoop.hbase.client.jdo.IHBaseLog;
 import com.apache.hadoop.hbase.client.jdo.util.HConfigUtil;
 
 public class TableProcessor implements IHBaseLog{
 	
+	public void deleteAllTables(){
+		List<TableInfo> list = getTableDesc();
+		HBaseDBOImpl dbo = new HBaseDBOImpl();
+		for(TableInfo info:list){
+			dbo.deleteTable(false,info.getName());
+		}
+	}
 	/**
 	 * get Table information.
 	 * @return

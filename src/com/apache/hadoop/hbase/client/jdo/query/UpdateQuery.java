@@ -87,6 +87,7 @@ public class UpdateQuery extends HBQuery{
 			table = borrowTable();
 			table.setAutoFlush(false);
 			
+			
 			lock = table.lockRow(row);			
 			Delete del = new Delete(row,HConstants.LATEST_TIMESTAMP,lock); // delete row with all families.
 			for(String col:cols.keySet()) {
@@ -105,7 +106,7 @@ public class UpdateQuery extends HBQuery{
 		}catch(Exception e){
 			log.debug("update",e);
 		} finally{			
-			releaseTable(table);
+			releaseTable(table,lock);
 		}
 		return isSuccess;
 	}
