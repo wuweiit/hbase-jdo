@@ -8,11 +8,14 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import org.apache.hadoop.hbase.HBaseConfiguration;
 
+import com.apache.hadoop.hbase.client.jdo.AbstractHBaseDBO;
+import com.apache.hadoop.hbase.client.jdo.HBaseDBOImpl;
 import com.apache.hadoop.hbase.tool.view.AbstractHPanel;
 import com.apache.hadoop.hbase.tool.view.comp.table.HJTablePanel;
 import com.apache.hadoop.hbase.tool.view.comp.table.ISelectedRowListener;
@@ -75,7 +78,7 @@ public class TableMainView extends AbstractHPanel {
 					if(list==null || list.size()==0) {
 						showSimpleDialog("No data");
 					}else{
-						infoTablePane.loadModelData(proc.getTableDesc());
+						infoTablePane.loadModelData(list);
 					}
 				}
 			});
@@ -91,6 +94,19 @@ public class TableMainView extends AbstractHPanel {
 	private JButton getBtnDelete() {
 		if (btnDelete == null) {
 			btnDelete = new JButton("Delete");
+			btnDelete.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					TableInfo info = (TableInfo)infoTablePane.getSelectedObject();
+					String tableName = info.getName();
+					int result = JOptionPane.showConfirmDialog(frame,"Do you want to delete "+tableName+" table?");
+					if(result==JOptionPane.YES_OPTION){
+						AbstractHBaseDBO dbo = new HBaseDBOImpl();
+						dbo.deleteTable(tableName);
+						TableProcessor proc = new TableProcessor();
+						infoTablePane.loadModelData(proc.getTableDesc());
+					}
+				}
+			});
 		}
 		return btnDelete;
 	}

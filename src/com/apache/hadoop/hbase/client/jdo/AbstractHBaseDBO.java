@@ -153,12 +153,14 @@ public abstract class AbstractHBaseDBO implements IHBaseLog {
 	}
 	
 	public final String makeIndexID(String family, String colName){
-		return "_"+family+"_"+colName;
+//		return family+"-"+colName;
+		return colName;
 	}
 	
 	public final String makeColName(String indexID){
-		int pos = indexID.lastIndexOf("_");
-		return indexID.substring(pos+1,indexID.length());
+//		int pos = indexID.lastIndexOf("-");
+//		return indexID.substring(pos+1,indexID.length());
+		return indexID;
 	}
 
 	/**
@@ -259,6 +261,7 @@ public abstract class AbstractHBaseDBO implements IHBaseLog {
 		IndexedTableAdmin admin = null;
 		try {
 			admin = new IndexedTableAdmin(config);
+			log.debug("try to remove indexTable ={}{}", table,indexID);
 			admin.removeIndex(table.getBytes(), indexID);
 			log.debug("removed indexTable ={}{}", table,indexID);
 			isSuccess = true;

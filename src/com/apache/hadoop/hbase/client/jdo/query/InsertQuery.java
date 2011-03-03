@@ -75,6 +75,7 @@ public class InsertQuery extends HBQuery{
 			List<Put> puts = null;
 			for(AbstractHBaseBean bean: list) {
 				long newRowKey = sequence.makeNextUniqueKey(tableName);
+				
 				Properties p =processor.toProperties(bean,ANT_TYPE.COLUMN);
 				Put put = new Put(Bytes.toBytes(newRowKey));
 				for(Object col:p.keySet()){
