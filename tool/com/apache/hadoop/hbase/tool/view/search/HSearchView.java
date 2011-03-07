@@ -170,6 +170,7 @@ public class HSearchView extends AbstractHPanel {
 			btnSearch = new JButton("Search");
 			btnSearch.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					model.clear();
 					search();
 				}
 			});

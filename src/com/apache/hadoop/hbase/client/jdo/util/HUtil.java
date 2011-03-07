@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.hsqldb.lib.Collection;
 
@@ -62,6 +63,26 @@ public class HUtil {
 	        
 		} else{
 			return Bytes.toBytes((String)value);
+		}
+	}
+	
+	public static String convertString(byte[] value){
+		if(value==null) return "null";
+		else if(value.length==1){
+			return value[0]+"";
+		}else if(value.length==2) {
+			return Bytes.toShort(value)+"";
+		}else if(value.length==4){
+			return Bytes.toInt(value)+"";
+		}else if(value.length==8){			
+			return Bytes.toLong(value)+"";
+		}else {
+			String str = Bytes.toString(value);
+			if(StringUtils.isWhitespace(str)){
+				return "Blank";
+			}else{
+				return str;
+			}
 		}
 	}
 	

@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.poi.util.StringUtil;
 
+import com.apache.hadoop.hbase.client.jdo.util.HUtil;
 import com.apache.hadoop.hbase.tool.view.comp.table.AbstractHTableModel;
 import com.apache.hadoop.hbase.tool.view.comp.table.HTableColumn;
 import com.apache.hadoop.hbase.tool.view.processor.TableDetailInfo;
@@ -49,12 +51,14 @@ public class TableColumnInfoModel extends AbstractHTableModel<TableDetailInfo>{
 				byte[] value = info.getColumns().get(col);
 				StringBuilder sb = new StringBuilder();
 				sb.append(col).append("(");
-				sb.append(Bytes.toString(value)).append(")");
+				sb.append(HUtil.convertString(value)).append(")");
 				return sb.toString();
 			}
 		}
 		return "=No Data=";
 	}
+	
+
 
 	@Override
 	public void loadTestData(int count) {

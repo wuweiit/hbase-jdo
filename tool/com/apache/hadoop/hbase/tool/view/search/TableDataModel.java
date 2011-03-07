@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.hadoop.hbase.util.Bytes;
 
+import com.apache.hadoop.hbase.client.jdo.util.HUtil;
 import com.apache.hadoop.hbase.tool.view.comp.table.AbstractHTableModel;
 import com.apache.hadoop.hbase.tool.view.comp.table.HTableColumn;
 import com.apache.hadoop.hbase.tool.view.processor.TableDataBean;
@@ -48,7 +49,7 @@ public class TableDataModel extends AbstractHTableModel<TableDataBean>{
 		for(String name:info.getColumns().keySet()) {
 			if(name.equals(columnInfo.getColumnName())) {
 				byte[] value = info.getColumns().get(name);
-				return Bytes.toString(value);
+				return HUtil.convertString(value);
 			}
 		}
 		
@@ -70,4 +71,5 @@ public class TableDataModel extends AbstractHTableModel<TableDataBean>{
 		}
 		fireTableDataChanged();
 	}
+
 }
