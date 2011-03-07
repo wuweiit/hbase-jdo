@@ -11,8 +11,11 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.apache.hadoop.hbase.client.jdo.HBaseDBOImpl;
+import com.apache.hadoop.hbase.client.jdo.query.DeleteQuery;
 import com.apache.hadoop.hbase.tool.core.UIResult;
 import com.apache.hadoop.hbase.tool.view.AbstractHPanel;
 import com.apache.hadoop.hbase.tool.view.comp.ExcelButton;
@@ -42,6 +45,9 @@ public class HSearchView extends AbstractHPanel {
 	private JLabel lblFamily;
 	private JLabel lblLimit;
 	private TableDataModel model;
+	private JPanel panel;
+	private JButton btnNewButton;
+	private JButton btnNewButton_1;
 
 	public HSearchView() {
 		initialize();
@@ -55,6 +61,7 @@ public class HSearchView extends AbstractHPanel {
 		this.setLayout(new BorderLayout());
 		add(getPanelTop(), BorderLayout.NORTH);
 		add(getPanelCenter(), BorderLayout.CENTER);
+		add(getPanel(), BorderLayout.SOUTH);
 	}
 
 	@Override
@@ -153,14 +160,19 @@ public class HSearchView extends AbstractHPanel {
 		return cboxTable;
 	}
 	
-	private void search(){
+	private void search(boolean isReload){
 		if (cboxTable.getSelectedIndex() == 0)
 			return;
 		String table = cboxTable.getSelectedItem().toString();
 		String family = cboxFamily.getSelectedItem().toString();
 
 		int limit = Integer.parseInt(cboxLimit.getSelectedItem().toString());
-		byte[] startRow = model.getLastRow() == null ? null : model.getLastRow().getRow();
+		byte[] startRow = null;
+		if(isReload){
+			startRow = model.getFirstRow() == null ? null : model.getFirstRow().getRow();
+		}else{
+			startRow = model.getLastRow() == null ? null : model.getLastRow().getRow();
+		}
 		List<TableDataBean> list = proc.getTableData(table, family, startRow, limit);
 		dataPane.loadModelData(list);
 	}
@@ -171,7 +183,7 @@ public class HSearchView extends AbstractHPanel {
 			btnSearch.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					model.clear();
-					search();
+					search(false);
 				}
 			});
 		}
@@ -215,7 +227,7 @@ public class HSearchView extends AbstractHPanel {
 			btnNext = new JButton("Next >");
 			btnNext.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					search();
+					search(false);
 				}
 			});
 		}
@@ -259,5 +271,50 @@ public class HSearchView extends AbstractHPanel {
 			lblLimit = new JLabel("Limit:");
 		}
 		return lblLimit;
+	}
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			panel.add(getBtnNewButton());
+			panel.add(getBtnNewButton_1());
+		}
+		return panel;
+	}
+	private JButton getBtnNewButton() {
+		if (btnNewButton == null) {
+			btnNewButton = new JButton("Delete 1Row");
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int result = JOptionPane.showConfirmDialog(frame,"Do you want to delete selected row?");
+					if(result==JOptionPane.YES_OPTION){	
+						TableDataBean bean = (TableDataBean)dataPane.getSelectedObject();
+						HBaseDBOImpl dbo = new HBaseDBOImpl();
+						DeleteQuery dq = dbo.createDeleteQuery(bean.getTable());
+						dq.deleteRow(bean.getRow());
+						search(true);						
+					}
+				}
+			});
+		}
+		return btnNewButton;
+	}
+	private JButton getBtnNewButton_1() {
+		if (btnNewButton_1 == null) {
+			btnNewButton_1 = new JButton("Delete All");
+			btnNewButton_1.setEnabled(false);
+			btnNewButton_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int result = JOptionPane.showConfirmDialog(frame,"Do you want to delete all?");
+					if(result==JOptionPane.YES_OPTION){	
+						TableDataBean bean = (TableDataBean)dataPane.getSelectedObject();
+						HBaseDBOImpl dbo = new HBaseDBOImpl();
+						DeleteQuery dq = dbo.createDeleteQuery(bean.getTable());
+						dq.deleteRow(bean.getRow());
+						search(true);
+					}
+				}
+			});
+		}
+		return btnNewButton_1;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

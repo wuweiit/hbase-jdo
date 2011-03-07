@@ -66,6 +66,14 @@ public class HUtil {
 		}
 	}
 	
+	public static String toBytesString(byte[] value){
+		StringBuilder sb = new StringBuilder();
+		for(byte b:value){
+			sb.append(b);
+		}
+		return sb.toString();
+	}
+	
 	public static String convertString(byte[] value){
 		if(value==null) return "null";
 		else if(value.length==1){

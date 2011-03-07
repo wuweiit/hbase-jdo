@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.NumberUtils;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import com.apache.hadoop.hbase.client.jdo.util.HUtil;
@@ -21,7 +22,7 @@ public class TableDataModel extends AbstractHTableModel<TableDataBean>{
 	
 	private List<String> makeColumnNames(){
 		List<String> cols = new ArrayList<String>();
-		
+		cols.add("row_key");
 		for(TableDataBean bean:values){
 			for(String name:bean.getColumns().keySet()){
 				if(cols.contains(name)==false) cols.add(name);
@@ -46,10 +47,14 @@ public class TableDataModel extends AbstractHTableModel<TableDataBean>{
 		
 		HTableColumn columnInfo = columns.get(c);
 		
-		for(String name:info.getColumns().keySet()) {
-			if(name.equals(columnInfo.getColumnName())) {
-				byte[] value = info.getColumns().get(name);
-				return HUtil.convertString(value);
+		if(c==0){
+			return HUtil.toBytesString(info.getRow());
+		}else{
+			for(String name:info.getColumns().keySet()) {
+				if(name.equals(columnInfo.getColumnName())) {
+					byte[] value = info.getColumns().get(name);
+					return HUtil.convertString(value);
+				}
 			}
 		}
 		

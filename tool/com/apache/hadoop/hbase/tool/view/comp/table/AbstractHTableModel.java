@@ -22,6 +22,11 @@ public abstract class AbstractHTableModel<T> extends AbstractTableModel{
 		if(values.size()==0) return null;
 		return values.get(values.size()-1);
 	}
+	
+	public T getFirstRow(){
+		if(values.size()==0) return null;
+		return values.get(0);
+	}
 
 	public void addColumn(HTableColumn col){
 		this.columns.add(col);
