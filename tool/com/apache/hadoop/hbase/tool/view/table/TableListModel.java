@@ -35,4 +35,9 @@ public class TableListModel extends AbstractHTableModel<TableInfo>{
 		}
 		fireTableDataChanged();
 	}
+
+	@Override
+	public long getValueLength(int row, int column) {
+		return getValueAt(row,column).toString().length();
+	}
 }

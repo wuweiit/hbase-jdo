@@ -60,4 +60,9 @@ public class TableConfigModel extends AbstractHTableModel<HConfigInfo>{
 		fireTableDataChanged();
 	}
 
+	@Override
+	public long getValueLength(int row, int column) {
+		return getValueAt(row,column).toString().length();
+	}
+
 }

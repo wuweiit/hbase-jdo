@@ -90,6 +90,8 @@ public abstract class AbstractHTableModel<T> extends AbstractTableModel{
 		return values.get(row);
 	}
 	
+	public abstract long getValueLength(int row, int column);
+	
 	@Override
 	public abstract Object getValueAt(int row, int column);
 	

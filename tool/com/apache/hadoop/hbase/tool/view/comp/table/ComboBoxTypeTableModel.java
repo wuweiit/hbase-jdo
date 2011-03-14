@@ -11,9 +11,9 @@ public class ComboBoxTypeTableModel extends AbstractTableModel {
 	private String[] cols = {"Column", "Type"};
 	protected List<HTableColumn> fdata = new ArrayList<HTableColumn>();
 	protected List<HDataType> sdata = new ArrayList<HDataType>();
-	
-	public ComboBoxTypeTableModel(){
-		
+	protected AbstractHTableModel bodyModel;
+	public ComboBoxTypeTableModel(AbstractHTableModel bodyModel){
+		this.bodyModel = bodyModel;
 	}
 	
 	public void setData(List<HTableColumn> list){
@@ -23,7 +23,9 @@ public class ComboBoxTypeTableModel extends AbstractTableModel {
 		this.fdata.addAll(list);
 		int i=0;
 		for(HTableColumn col:fdata){
-			sdata.add(i,HDataType.STRING);
+			long length = bodyModel.getValueLength(0,col.getIndex());
+			HDataType type = HDataType.toSizeType((int)length);
+			sdata.add(i,type);
 			i++;
 		}
 	}

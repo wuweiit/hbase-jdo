@@ -40,25 +40,35 @@ public class TableDataModel extends AbstractHTableModel<TableDataBean>{
 			i++;
 		}
 	}
-
+	
 	@Override
-	public Object getValueAt(int r, int c) {
+	public long getValueLength(int row, int column) {
+		byte[] value =getValue(row,column);
+		return value==null? 0:value.length;
+	}
+
+	
+	private byte[] getValue(int r,int c){
 		TableDataBean info = this.values.get(r);
 		
 		HTableColumn columnInfo = columns.get(c);
 		
 		if(c==0){
-			return HUtil.toBytesString(info.getRow());
+			return info.getRow();
 		}else{
 			for(String name:info.getColumns().keySet()) {
 				if(name.equals(columnInfo.getColumnName())) {
 					byte[] value = info.getColumns().get(name);
-					return HUtil.convertString(value);
+					return value;
 				}
 			}
 		}
-		
-		return "";
+		return null;
+	}
+
+	@Override
+	public Object getValueAt(int r, int c) {
+		return HUtil.toBytesString(getValue(r,c));
 	}
 
 	@Override
@@ -76,5 +86,4 @@ public class TableDataModel extends AbstractHTableModel<TableDataBean>{
 		}
 		fireTableDataChanged();
 	}
-
 }

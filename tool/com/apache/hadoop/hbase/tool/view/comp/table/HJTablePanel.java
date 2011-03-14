@@ -71,7 +71,7 @@ public class HJTablePanel<T> extends JPanel{
 	private JScrollPane makeTypeTable(){
 		typeTable = new JTable();
 		typeTable.setRowHeight(25);
-		typeModel = new ComboBoxTypeTableModel();
+		typeModel = new ComboBoxTypeTableModel(model);
 		typeTable.setModel(typeModel);
 		
 		JComboBox comboBox = new JComboBox(HDataType.values());

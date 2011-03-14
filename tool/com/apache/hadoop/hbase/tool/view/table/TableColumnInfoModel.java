@@ -58,8 +58,6 @@ public class TableColumnInfoModel extends AbstractHTableModel<TableDetailInfo>{
 		return "=No Data=";
 	}
 	
-
-
 	@Override
 	public void loadTestData(int count) {
 		for(int i=0;i<count;i++){
@@ -78,5 +76,10 @@ public class TableColumnInfoModel extends AbstractHTableModel<TableDetailInfo>{
 			values.add(info);
 		}
 		fireTableDataChanged();
+	}
+
+	@Override
+	public long getValueLength(int row, int column) {
+		return getValueAt(row,column).toString().length();
 	}
 }
