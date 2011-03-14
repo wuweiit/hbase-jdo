@@ -3,7 +3,7 @@
 	<!-- Hadoop's hdfs location-->
 	<property>
 		<name>hbase.rootdir</name>
-		<value>hdfs://192.168.0.203:9102/hbase</value>
+		<value>hdfs://192.168.0.20:9101/hbase</value>
 		<description>The directory shared by regon servers.
 			Should be
 			fully-qualified to include the filesystem to use.
@@ -15,7 +15,7 @@
 	<!-- Hbase Master Info -->
 	<property>
 		<name>hbase.master</name>
-		<value>192.168.0.203:60000</value>
+		<value>192.168.0.20:60000</value>
 		<description>By default ZK is configured with localhost which means
 			the client
 			should run on the same physical machine. Configure this if client runs on a
@@ -56,7 +56,7 @@
 	-->
 	<property>
 		<name>hbase.zookeeper.quorum</name>
-		<value>192.168.0.203</value>
+		<value>192.168.0.201</value>
 	</property>
 	<property>
 		<name>hbase.zookeeper.property.clientPort</name>
@@ -69,6 +69,15 @@
 		<description>Temporary directory on the local filesystem.
 		</description>
 	</property>
+
+	<property>
+		<name>hbase.client.retries.number</name>
+		<value>1</value>
+		<description>retry count
+		</description>
+	</property>
+	
+
 
 	<!--  Secondary Indexes in Habase. -->
 	<property>

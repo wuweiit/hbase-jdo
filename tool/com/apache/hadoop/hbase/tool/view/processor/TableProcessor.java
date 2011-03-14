@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Set;
 
+import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
@@ -30,6 +31,22 @@ public class TableProcessor implements IHBaseLog{
 		HBaseDBOImpl dbo = new HBaseDBOImpl();
 		for(TableInfo info:list){
 			dbo.deleteTable(false,info.getName());
+		}
+	}
+	
+	/**
+	 * check to connect to server.
+	 * @return
+	 */
+	public boolean isConnectable(){
+		try {
+			HBaseConfiguration config = HConfigUtil.makeHBaseConfig();
+			config.setInt("hbase.client.retries.number",1);
+			HBaseAdmin admin = new HBaseAdmin(config);
+			return true;
+		} catch (Exception e) {
+			log.error("isConnectable",e);
+			return false;
 		}
 	}
 	/**

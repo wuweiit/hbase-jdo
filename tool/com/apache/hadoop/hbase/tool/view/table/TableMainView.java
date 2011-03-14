@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 
 import org.apache.hadoop.hbase.HBaseConfiguration;
 
@@ -38,6 +39,7 @@ public class TableMainView extends AbstractHPanel {
 	private JLabel lblGetColumnInformation;
 	private JLabel labelServer;
 	private JButton btnNewButton;
+	private TableProcessor proc;
 	/**
 	 * Create the panel.
 	 */
@@ -52,9 +54,19 @@ public class TableMainView extends AbstractHPanel {
 	}
 	
 	private void initialize() {
+		proc = new TableProcessor();
 		setLayout(new BorderLayout(0, 0));
 		add(getPanelTopMenu(), BorderLayout.NORTH);
 		add(getSplitPane(), BorderLayout.CENTER);
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				if(proc.isConnectable()==false){
+					showSimpleDialog("Cannot connect to Server. \nYou should check quorum ip & port");
+				}				
+			}
+		});
 	}
 
 	private JPanel getPanelTopMenu() {
@@ -75,7 +87,6 @@ public class TableMainView extends AbstractHPanel {
 			buttonAllTables = new JButton("All Tables");
 			buttonAllTables.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					TableProcessor proc = new TableProcessor();
 					List<TableInfo> list = proc.getTableDesc();
 					if(list==null || list.size()==0) {
 						showSimpleDialog("No data");
