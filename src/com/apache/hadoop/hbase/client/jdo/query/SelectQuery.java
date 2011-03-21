@@ -91,7 +91,8 @@ public class SelectQuery extends HBQuery{
 		} catch (Exception e) {
 			log.error("Search",e);
 		} finally{
-			releaseTable(table,scanner);
+			closeScanner(scanner);
+			releaseTable(table);
 		}
 		
 		return isExist;
@@ -238,7 +239,8 @@ public class SelectQuery extends HBQuery{
 		} catch (Exception e) {
 			log.error("Search",e);
 		} finally{
-			releaseTable(table,scanner);
+			closeScanner(scanner);
+			releaseTable(table);
 		}
 		
 		return list;
@@ -279,7 +281,8 @@ public class SelectQuery extends HBQuery{
 		} catch (Exception e) {
 			log.error("total row count",e);
 		} finally{
-			releaseTable(table,rs);
+			closeScanner(rs);
+			releaseTable(table);
 		}
 		return count;
 	}

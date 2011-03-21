@@ -64,16 +64,10 @@ public abstract class HBQuery  implements IHBaseLog{
 			e.printStackTrace();
 		}
 	}
-	
-	public final void releaseTable(IndexedTable table, ResultScanner rs){
-		releaseTable(table);
-		closeScanner(rs);
-	}
-	
+
 	public final void releaseTable(IndexedTable table){
-		releaseTable(table,(ResultScanner)null);
+		releaseTable(table,null);
 	}
-	
 	
 	public String getTableName() {
 		return tableName;
