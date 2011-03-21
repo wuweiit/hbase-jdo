@@ -15,6 +15,7 @@ import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.tableindexed.IndexSpecification;
 import org.apache.hadoop.hbase.client.tableindexed.IndexedTableAdmin;
 import org.apache.hadoop.hbase.client.tableindexed.IndexedTableDescriptor;
+import org.apache.hadoop.hbase.client.tableindexed.SimpleIndexKeyGenerator;
 
 import com.apache.hadoop.hbase.client.jdo.query.DeleteQuery;
 import com.apache.hadoop.hbase.client.jdo.query.HBaseBeanProcessor;
@@ -210,7 +211,7 @@ public abstract class AbstractHBaseDBO implements IHBaseLog {
 	}
 
 	/**
-	 * add a index to an existing table.
+	 * add a index to an existing table. (only single column index)
 	 * 
 	 * @param table
 	 * @param family
@@ -235,6 +236,29 @@ public abstract class AbstractHBaseDBO implements IHBaseLog {
 		return addIndexExistingTable(table, columns.toArray(new IndexSpecification[columns.size()]));
 	}
 
+	/**
+	 * add Index for muli column.
+	 * @param table
+	 * @param family
+	 * @param indexColumn
+	 * @param cols
+	 * @return
+	 */
+	public boolean addMultiColumnIndex(String table, String family,String indexColumn, String[] cols){
+		String indexID = makeIndexID(family, indexColumn);
+		
+		byte[][] indexedColumns = new byte[][] { (family + ":" + indexColumn).getBytes()};
+		byte[][] additionalColumns = new byte[cols.length][];
+		for(int i=0;i<cols.length;i++){
+			byte[] v = (family + ":" + cols[i]).getBytes();
+			additionalColumns[i] = v;
+		}
+		
+		IndexSpecification is = new IndexSpecification(indexID, indexedColumns, 
+				additionalColumns, new SimpleIndexKeyGenerator(indexedColumns[0]));
+		
+		return addIndexExistingTable(table, is);
+	}
 	/**
 	 * add a index to an existing table
 	 * 

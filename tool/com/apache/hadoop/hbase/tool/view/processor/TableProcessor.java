@@ -152,22 +152,23 @@ public class TableProcessor implements IHBaseLog{
 			log(r);
 			
 			NavigableMap<byte[], NavigableMap<byte[], byte[]>> mv = r.getNoVersionMap();
-			
-			for(byte[] f:mv.keySet()){
-				TableDetailInfo info = new TableDetailInfo();
-				info.setName(tableName);
-				
-				info.setFamily(Bytes.toString(f));
-				
-				Map<String,byte[]> columns = new HashMap<String, byte[]>();
-				NavigableMap<byte[], byte[]> mv2 = mv.get(f);
-				for(byte[] col:mv2.keySet()) {
-					columns.put(Bytes.toString(col),mv2.get(col));
+			if(mv!=null) {
+				for(byte[] f:mv.keySet()){
+					TableDetailInfo info = new TableDetailInfo();
+					info.setName(tableName);
+					
+					info.setFamily(Bytes.toString(f));
+					
+					Map<String,byte[]> columns = new HashMap<String, byte[]>();
+					NavigableMap<byte[], byte[]> mv2 = mv.get(f);
+					for(byte[] col:mv2.keySet()) {
+						columns.put(Bytes.toString(col),mv2.get(col));
+					}
+					info.setColumns(columns);
+					list.add(info);
+					
+					log(info);
 				}
-				info.setColumns(columns);
-				list.add(info);
-				
-				log(info);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

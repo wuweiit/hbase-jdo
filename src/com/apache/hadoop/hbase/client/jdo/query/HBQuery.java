@@ -1,6 +1,7 @@
 package com.apache.hadoop.hbase.client.jdo.query;
 
 import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.RowLock;
 import org.apache.hadoop.hbase.client.tableindexed.IndexedTable;
 
@@ -55,8 +56,22 @@ public abstract class HBQuery  implements IHBaseLog{
 			log.error("release error",e);
 		}
 	}
+	
+	public final void closeScanner(ResultScanner rs){
+		try{
+			if(rs!=null) rs.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public final void releaseTable(IndexedTable table, ResultScanner rs){
+		releaseTable(table);
+		closeScanner(rs);
+	}
+	
 	public final void releaseTable(IndexedTable table){
-		releaseTable(table,null);
+		releaseTable(table,(ResultScanner)null);
 	}
 	
 	
