@@ -232,7 +232,7 @@ public class SelectQuery extends HBQuery{
 					indexColumns,		        
 					indexFilterList, // filter
 					baseColumns
-			);
+			);			
 			list = processor.convert(tableName,c,scanner);
 		} catch (IndexNotFoundException e) {
 			log.error("Search",e);			

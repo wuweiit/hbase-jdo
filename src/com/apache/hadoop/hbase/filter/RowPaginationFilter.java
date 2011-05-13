@@ -22,6 +22,7 @@ package com.apache.hadoop.hbase.filter;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.filter.Filter;
@@ -90,5 +91,23 @@ public class RowPaginationFilter implements Filter {
 		boolean isExclude = this.rowsAccepted < this.offset || this.rowsAccepted>=this.limit+this.offset;
 		rowsAccepted++;
 		return isExclude;
+	}
+
+	@Override
+	public void filterRow(List<KeyValue> kvs) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean hasFilterRow() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public KeyValue getNextKeyHint(KeyValue currentKV) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -88,7 +88,8 @@ public class HBaseBeanProcessor implements IHBaseLog{
 			// family, qualifier(key,value)
 			NavigableMap<byte[],NavigableMap<byte[],byte[]>> map = r.getNoVersionMap();
 			
-			bean.setTime(r.getCellValue().getTimestamp());
+			
+//			bean.setTime(r.getCellValue().getTimestamp());
 			Set<byte[]> families = map.keySet();
 			for(byte[] family:families){
 				bean.setFamily(Bytes.toString(family));
@@ -100,8 +101,12 @@ public class HBaseBeanProcessor implements IHBaseLog{
 					byte[] values = map2.get(col);
 					String colName = Bytes.toString(col);
 					Field field = getField(fieldList,colName);
+					
+					long time = r.getColumnLatest(family,col).getTimestamp();
+					bean.setTime(time);
 					if(field!=null) {
 						colName = convertFieldName(field);
+						
 						BeanUtils.setProperty(bean,colName, HUtil.makeValue(field.getType(),values));
 					}
 				}

@@ -58,7 +58,7 @@ public class UpdateQuery extends HBQuery{
 					byte[] value = cols.get(col);
 					p.add(family.getBytes(), col.getBytes(), value);
 				}
-				p.setTimeStamp(System.currentTimeMillis());
+//				p.setTimeStamp(System.currentTimeMillis());
 //				data.add(p);
 				table.put(p);			
 			}
