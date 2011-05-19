@@ -22,12 +22,11 @@ package com.apache.hadoop.hbase.filter;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.filter.Filter;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * This filter can be used for specified row count, 

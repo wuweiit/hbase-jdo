@@ -15,7 +15,6 @@ import org.apache.hadoop.hbase.util.Bytes;
 import com.apache.hadoop.hbase.client.jdo.AbstractHBaseDBO;
 import com.apache.hadoop.hbase.client.jdo.HBaseDBOImpl;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 public class IndexTest extends TestCase{
 	public void testIndex() throws IOException {

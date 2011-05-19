@@ -33,7 +33,7 @@
 	<!-- 분산 클러스터 인경우 =true -->
 	<property>
 		<name>hbase.cluster.distributed</name>
-		<value>true</value>
+		<value>false</value>
 		<description>The mode the cluster will be in. Possible values are
 			false: standalone and pseudo-distributed setups with managed
 			Zookeeper
